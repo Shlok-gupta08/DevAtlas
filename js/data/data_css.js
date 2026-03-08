@@ -2,7 +2,8 @@
 //  CSS REFERENCE DATA
 //  Exhaustive reference for CSS — from absolute basics to edge cases
 // =================================================================
-LANGUAGES['css'] = {
+window.DevAtlasData = window.DevAtlasData || {};
+window.DevAtlasData.css = {
     name: 'CSS',
     desc: 'The language of visual design on the web. Master layout, animations, modern selectors, and the quirks that trip up everyone.',
     sections: [

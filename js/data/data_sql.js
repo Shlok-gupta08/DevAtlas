@@ -2,7 +2,8 @@
 //  SQL REFERENCE DATA (v2)
 //  Exhaustive reference with a reference database + query output tables
 // =================================================================
-LANGUAGES['sql'] = {
+window.DevAtlasData = window.DevAtlasData || {};
+window.DevAtlasData.sql = {
     name: 'SQL',
     desc: 'The universal language for querying and manipulating relational databases. Master joins, window functions, CTEs, and performance tuning.',
     sections: [

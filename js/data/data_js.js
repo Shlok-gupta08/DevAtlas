@@ -2,7 +2,8 @@
 //  JAVASCRIPT REFERENCE DATA
 //  Exhaustive reference — from absolute basics to rare edge cases
 // =================================================================
-LANGUAGES['javascript'] = {
+window.DevAtlasData = window.DevAtlasData || {};
+window.DevAtlasData.javascript = {
     name: 'JavaScript',
     desc: 'The language of the web. Master closures, the event loop, async patterns, proxies, generators, and the weird parts.',
     sections: [

@@ -2,7 +2,8 @@
 //  HTML REFERENCE DATA
 //  Exhaustive reference for HTML — from absolute basics to edge cases
 // =================================================================
-LANGUAGES['html'] = {
+window.DevAtlasData = window.DevAtlasData || {};
+window.DevAtlasData.html = {
     name: 'HTML',
     desc: 'The backbone of every web page. Master semantic markup, accessibility, forms, media, and modern HTML5 APIs.',
     sections: [

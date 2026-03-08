@@ -2,7 +2,8 @@
 //  GIT REFERENCE DATA
 //  Based on "The Ultimate Git Reference Guide" markdown notes
 // =================================================================
-LANGUAGES['git'] = {
+window.DevAtlasData = window.DevAtlasData || {};
+window.DevAtlasData.git = {
     name: 'Git',
     desc: 'The industry-standard distributed version control system. Master branching, rebasing, cherry-pick, reflog, and professional workflows.',
     sections: [

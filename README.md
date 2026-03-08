@@ -76,7 +76,7 @@ DevAtlas isn't just another cheat sheet — it's designed to be a tool you'd act
 | Syntax Highlighting | [Highlight.js](https://highlightjs.org/) |
 | Animations | [GSAP](https://greensock.com/gsap/) + ScrollTrigger |
 | Icons | [Lucide Icons](https://lucide.dev/) |
-| Build (optional) | Python build scripts for data concatenation |
+| Build | None — zero build step, just open `index.html` |
 
 ---
 
@@ -84,16 +84,31 @@ DevAtlas isn't just another cheat sheet — it's designed to be a tool you'd act
 
 ```
 DevAtlas/
-├── index.html          # Main app — single-file build output
-├── data_html.js        # HTML reference content module
-├── data_css.js         # CSS reference content module
-├── data_js.js          # JavaScript reference content module
-├── data_sql.js         # SQL reference content module
-├── data_git.js         # Git reference content module
-├── build.py            # Build script for concatenation
-├── final_build.py      # Production build script
-└── README.md           # You are here
+├── index.html                  # Entry point — just double-click to run
+│
+├── css/
+│   ├── main.css                # Base styles, CSS variables, typography
+│   ├── layout.css              # Grid, flexbox, structural layout, landing page
+│   └── sidebar.css             # Sidebar specific styling
+│
+├── js/
+│   ├── data/
+│   │   ├── data_html.js        # HTML reference (window.DevAtlasData.html)
+│   │   ├── data_css.js         # CSS reference (window.DevAtlasData.css)
+│   │   ├── data_js.js          # JavaScript reference
+│   │   ├── data_sql.js         # SQL reference
+│   │   └── data_git.js         # Git reference
+│   │
+│   ├── components/
+│   │   ├── sidebar.js          # Sidebar toggle logic (window.SidebarController)
+│   │   └── contentRender.js    # Content rendering engine (window.ContentRenderer)
+│   │
+│   └── app.js                  # Main init — landing page, branding, bootstrap
+│
+└── README.md                   # You are here
 ```
+
+> **No build step required.** All modularity is achieved through sequential `<script>` tags and the global `window` object. Works perfectly on `file://` protocol.
 
 ---
 
@@ -115,10 +130,14 @@ xdg-open index.html     # Linux
 
 ### Adding New Language Content
 
-1. Create a new `data_<language>.js` file following the existing pattern
-2. Define the language object with sections and cards
-3. Register it in the `CATEGORIES` and `LANGUAGES` objects inside `index.html`
-4. Rebuild using the build script or manually add the script tag
+1. Create a new `js/data/data_<language>.js` file following the existing pattern:
+   ```js
+   window.DevAtlasData = window.DevAtlasData || {};
+   window.DevAtlasData.yourlang = { name: 'YourLang', desc: '...', sections: [...] };
+   ```
+2. Add a `<script src="js/data/data_yourlang.js"></script>` tag in `index.html` (before the components)
+3. Register the language in the `CATEGORIES` array inside `js/components/contentRender.js`
+4. Add an entry to the `SUPPORTED_LANGUAGES` array in `js/app.js` (for the landing page marquee)
 
 ---
 
@@ -152,7 +171,7 @@ Contributions are welcome! Here's how you can help:
 - [ ] Networking & API design
 - [ ] Search / filter functionality
 - [ ] Bookmark & favorites system
-- [ ] Landing homepage with APP_DESCRIPTION
+- [x] Landing homepage with animated marquee
 - [ ] PWA support for offline access
 - [ ] Dark/light theme toggle
 
@@ -161,6 +180,12 @@ Contributions are welcome! Here's how you can help:
 ## 📄 License
 
 This project is open source and available for personal and educational use.
+
+---
+
+## 👤 Author
+
+Built by [**Shlok-gupta08**](https://github.com/Shlok-gupta08)
 
 ---
 
