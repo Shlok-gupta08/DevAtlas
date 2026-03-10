@@ -156,7 +156,9 @@
                 window.scrollTo({ top: 0, behavior: 'instant' });
 
                 // Animate in
-                gsap.from('#sidebar', { x: -40, opacity: 0, duration: 0.4, ease: 'power3.out' });
+                // clearProps: 'transform' prevents GSAP's inline transform from
+                // overriding the CSS .collapsed { transform: translateX(-280px) } later
+                gsap.from('#sidebar', { x: -40, opacity: 0, duration: 0.4, ease: 'power3.out', clearProps: 'transform' });
                 gsap.from('#topnav', { y: -20, opacity: 0, duration: 0.3, ease: 'power3.out', delay: 0.1 });
                 gsap.from('#main', { opacity: 0, y: 20, duration: 0.4, ease: 'power3.out', delay: 0.15 });
             }

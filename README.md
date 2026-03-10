@@ -35,6 +35,27 @@ DevAtlas is organized into major domains, each broken down into exhaustive secti
 | **SQL** | DDL/DML, joins, subqueries, window functions, CTEs, indexing, transactions, stored procedures, and query optimization |
 | **Git** | Init, staging, branching, merging, rebasing, stashing, cherry-picking, reflog, tagging, Git workflows, and troubleshooting |
 
+### � Data Structures & Algorithms
+| Category | Problems | Topics Covered |
+|----------|----------|----------------|
+| **Arrays & Matrices** | 15+ | Two pointers, sliding window, prefix sums, matrix traversal, Kadane's algorithm |
+| **Searching & Sorting** | 10+ | Binary search variants, merge sort, quicksort, count inversions, binary search on answer |
+| **Strings** | 8+ | Palindromes, anagrams, sliding window, string compression, KMP |
+| **Recursion & Backtracking** | 13+ | Subsets, permutations, N-Queens, Sudoku, rat in a maze, knights tour |
+| **Linked Lists** | 10+ | Reversal, cycle detection, merging, Floyd's algorithm, LRU cache |
+| **Stacks & Queues** | 10+ | Monotonic stack, NGE, sliding window maximum, LFU cache |
+| **Greedy Algorithms** | 7+ | Activity selection, fractional knapsack, job sequencing, gas station |
+| **Binary Trees** | 15+ | All traversals, LCA, diameter, Morris traversal, tree construction |
+| **BST** | 10+ | Insertion, deletion, validation, kth smallest, balanced BST |
+| **Heaps** | 5+ | Build heap, heap sort, k-nearest points, connect ropes |
+| **Hashing & Tries** | 9+ | Hash map internals, trie operations, word break, prefix matching |
+| **Graphs** | 16+ | BFS/DFS, topological sort, Dijkstra, Bellman-Ford, Prim's, Kruskal, SCC |
+| **Dynamic Programming** | 15+ | 0/1 knapsack, LCS, LIS, matrix chain, coin change, interval DP |
+| **Segment Trees** | 3+ | Build, range query, point update, lazy propagation |
+| **Math & Bit Manipulation** | 8+ | Bit tricks, sieve, GCD, fast exponentiation |
+
+All DSA problems include a **problem description**, **3 test cases**, **C++ solution** with complexity analysis, and a **detailed walkthrough** with step-by-step trace.
+
 ### 🧩 Coming Soon
 | Topic | Planned Coverage |
 |-------|------------------|
@@ -42,7 +63,6 @@ DevAtlas is organized into major domains, each broken down into exhaustive secti
 | **Java** | OOP principles, collections framework, generics, multithreading, streams API, JVM internals, and design patterns |
 | **C / C++** | Memory management, pointers, structs, STL, templates, RAII, and systems-level concepts |
 | **TypeScript** | Type system, interfaces, generics, utility types, type guards, and integration with frameworks |
-| **Data Structures & Algorithms (DSA)** | Arrays, linked lists, stacks, queues, trees, graphs, hashing, sorting, searching, dynamic programming, greedy algorithms, and complexity analysis |
 | **System Design** | Scalability patterns, load balancing, caching, database sharding, message queues, microservices, and API design |
 | **CI/CD & DevOps** | GitHub Actions, Docker, Kubernetes, Jenkins, deployment pipelines, environment management, infrastructure as code, and monitoring |
 | **Shell / Bash Scripting** | File operations, text processing, cron jobs, environment variables, piping, and automation scripts |
@@ -89,19 +109,38 @@ DevAtlas/
 ├── css/
 │   ├── main.css                # Base styles, CSS variables, typography
 │   ├── layout.css              # Grid, flexbox, structural layout, landing page
-│   └── sidebar.css             # Sidebar specific styling
+│   ├── sidebar.css             # Sidebar specific styling
+│   └── dsa.css                 # DSA section styles
 │
 ├── js/
 │   ├── data/
-│   │   ├── data_html.js        # HTML reference (window.DevAtlasData.html)
-│   │   ├── data_css.js         # CSS reference (window.DevAtlasData.css)
-│   │   ├── data_js.js          # JavaScript reference
-│   │   ├── data_sql.js         # SQL reference
-│   │   └── data_git.js         # Git reference
+│   │   ├── dev/
+│   │   │   ├── data_html.js    # HTML reference
+│   │   │   ├── data_css.js     # CSS reference
+│   │   │   ├── data_js.js      # JavaScript reference
+│   │   │   ├── data_sql.js     # SQL reference
+│   │   │   └── data_git.js     # Git reference
+│   │   └── dsa/
+│   │       ├── dsa_arrays.js           # Arrays & Matrices (15+ problems)
+│   │       ├── dsa_bst.js              # Binary Search Trees (10+ problems)
+│   │       ├── dsa_dp.js               # Dynamic Programming (15+ problems)
+│   │       ├── dsa_graphs.js           # Graphs (16+ problems)
+│   │       ├── dsa_greedy.js           # Greedy Algorithms (7+ problems)
+│   │       ├── dsa_hashing_tries.js    # Hashing & Tries (9+ problems)
+│   │       ├── dsa_heaps.js            # Heaps / Priority Queues (5+ problems)
+│   │       ├── dsa_linked_lists.js     # Linked Lists (10+ problems)
+│   │       ├── dsa_math_bits.js        # Mathematics & Bit Manipulation (8+ problems)
+│   │       ├── dsa_recursion.js        # Recursion & Backtracking (13+ problems)
+│   │       ├── dsa_searching_sorting.js # Searching & Sorting (10+ problems)
+│   │       ├── dsa_segment_trees.js    # Segment Trees (3+ problems)
+│   │       ├── dsa_stacks_queues.js    # Stacks & Queues (10+ problems)
+│   │       ├── dsa_strings.js          # Strings (8+ problems)
+│   │       └── dsa_trees.js            # Binary Trees (15+ problems)
 │   │
 │   ├── components/
 │   │   ├── sidebar.js          # Sidebar toggle logic (window.SidebarController)
-│   │   └── contentRender.js    # Content rendering engine (window.ContentRenderer)
+│   │   ├── contentRender.js    # Dev content rendering engine (window.ContentRenderer)
+│   │   └── dsaRenderer.js      # DSA rendering engine (window.DSARenderer)
 │   │
 │   └── app.js                  # Main init — landing page, branding, bootstrap
 │
@@ -160,11 +199,11 @@ Contributions are welcome! Here's how you can help:
 - [x] JavaScript comprehensive reference
 - [x] SQL comprehensive reference with query output tables
 - [x] Git comprehensive reference
+- [x] Data Structures & Algorithms (DSA) — 150+ problems across 15 categories
 - [ ] Python reference
 - [ ] Java reference
 - [ ] C/C++ reference
 - [ ] TypeScript reference
-- [ ] Data Structures & Algorithms (DSA)
 - [ ] System Design patterns
 - [ ] CI/CD & DevOps guides
 - [ ] Shell scripting reference
