@@ -25,6 +25,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
 
     <!-- GSAP + ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -40,6 +41,7 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/dsa.css">
 </head>
 
 <body>
@@ -54,6 +56,28 @@
         <div id="landing-languages"></div>
         <div id="landing-cta">
             <button id="landing-cta-btn">Explore the Atlas</button>
+        </div>
+    </div>
+
+    <!-- ===== SECTION PICKER (Dev / DSA) ===== -->
+    <div id="section-picker" class="hidden">
+        <button id="picker-back-landing" class="picker-back-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+            Back to Home
+        </button>
+        <div class="section-pick-card" id="pick-dev"
+             style="--card-glow:rgba(250,204,21,0.06);--card-border:rgba(250,204,21,0.25);--card-shadow:rgba(250,204,21,0.06);--card-accent:#facc15;">
+            <div class="pick-icon">💻</div>
+            <div class="pick-title">Development</div>
+            <div class="pick-desc">HTML, CSS, JavaScript, SQL & Git — complete syntax references and guides</div>
+            <div class="pick-arrow">Enter →</div>
+        </div>
+        <div class="section-pick-card" id="pick-dsa"
+             style="--card-glow:rgba(139,92,246,0.06);--card-border:rgba(139,92,246,0.25);--card-shadow:rgba(139,92,246,0.06);--card-accent:#8b5cf6;">
+            <div class="pick-icon">🧠</div>
+            <div class="pick-title">DSA</div>
+            <div class="pick-desc">Data Structures & Algorithms — 150+ problems with C++ solutions and complexity analysis</div>
+            <div class="pick-arrow">Enter →</div>
         </div>
     </div>
 
@@ -97,6 +121,9 @@
         <div id="content-area"></div>
     </main>
 
+    <!-- ===== DSA SECTION (separate from main) ===== -->
+    <div id="dsa-view"></div>
+
     <!-- ============================================================
          GLOBAL HELPERS (needed by data files)
          ============================================================ -->
@@ -135,17 +162,35 @@
     <!-- ============================================================
          DATA FILES (order doesn't matter — they all append to window.DevAtlasData)
          ============================================================ -->
-    <script src="js/data/data_html.js"></script>
-    <script src="js/data/data_css.js"></script>
-    <script src="js/data/data_js.js"></script>
-    <script src="js/data/data_sql.js"></script>
-    <script src="js/data/data_git.js"></script>
+    <script src="js/data/dev/data_html.js"></script>
+    <script src="js/data/dev/data_css.js"></script>
+    <script src="js/data/dev/data_js.js"></script>
+    <script src="js/data/dev/data_sql.js"></script>
+    <script src="js/data/dev/data_git.js"></script>
+
+    <!-- DSA Data Files -->
+    <script src="js/data/dsa/dsa_math_bits.js"></script>
+    <script src="js/data/dsa/dsa_arrays.js"></script>
+    <script src="js/data/dsa/dsa_searching_sorting.js"></script>
+    <script src="js/data/dsa/dsa_strings.js"></script>
+    <script src="js/data/dsa/dsa_recursion.js"></script>
+    <script src="js/data/dsa/dsa_linked_lists.js"></script>
+    <script src="js/data/dsa/dsa_stacks_queues.js"></script>
+    <script src="js/data/dsa/dsa_greedy.js"></script>
+    <script src="js/data/dsa/dsa_trees.js"></script>
+    <script src="js/data/dsa/dsa_bst.js"></script>
+    <script src="js/data/dsa/dsa_heaps.js"></script>
+    <script src="js/data/dsa/dsa_hashing_tries.js"></script>
+    <script src="js/data/dsa/dsa_graphs.js"></script>
+    <script src="js/data/dsa/dsa_dp.js"></script>
+    <script src="js/data/dsa/dsa_segment_trees.js"></script>
 
     <!-- ============================================================
          COMPONENTS (order: independent → dependent)
          ============================================================ -->
     <script src="js/components/sidebar.js"></script>
     <script src="js/components/contentRender.js"></script>
+    <script src="js/components/dsaRenderer.js"></script>
 
     <!-- ============================================================
          APP INIT (must be last — orchestrates everything)

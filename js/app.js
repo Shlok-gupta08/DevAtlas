@@ -1,7 +1,8 @@
 // =================================================================
 //  app.js — Main initialization file
 //  Loads after: data files → components → this file
-//  Handles: DOMContentLoaded, landing page, branding, marquee
+//  Handles: DOMContentLoaded, landing page, section picker, branding,
+//           marquee, navigation state management
 // =================================================================
 (function () {
     'use strict';
@@ -11,9 +12,11 @@
     var APP_TAGLINE = "Developer's Manual Reimagined";
     var APP_DESCRIPTION = 'The Centralized Library for all Code Syntax and Problems';
 
-    /* === SUPPORTED LANGUAGES (used for marquee + badges) ===
-       Update this list whenever you add a new language data file.
-       The 'key' must match the key in window.DevAtlasData.         */
+    /* === NAVIGATION STATE === */
+    // 'landing' | 'picker' | 'dev' | 'dsa-grid' | 'dsa-question'
+    var currentView = 'landing';
+
+    /* === SUPPORTED LANGUAGES (used for marquee + badges) === */
     var SUPPORTED_LANGUAGES = [
         { key: 'html', name: 'HTML', color: '#fb923c', svg: '<svg viewBox="0 0 24 24"><path fill="#fb923c" d="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0z"/><text x="12" y="16.5" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold" font-family="Arial,sans-serif">5</text></svg>' },
         { key: 'css', name: 'CSS', color: '#e879f9', svg: '<svg viewBox="0 0 24 24"><path fill="#e879f9" d="M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0z"/><text x="12" y="16.5" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold" font-family="Arial,sans-serif">3</text></svg>' },
@@ -74,26 +77,134 @@
         container.innerHTML = h;
     }
 
-    /* Enter the manual (leave landing page) */
+    /* ========== VIEW MANAGEMENT ========== */
+
+    function hideAllSections() {
+        document.getElementById('landing-overlay').classList.add('hidden');
+        document.getElementById('section-picker').classList.add('hidden');
+
+        // Dev sections
+        document.getElementById('sidebar').style.display = 'none';
+        document.getElementById('sidebar-toggle').style.display = 'none';
+        document.getElementById('sidebar-hover-zone').style.display = 'none';
+        document.getElementById('topnav').style.display = 'none';
+        document.getElementById('main').style.display = 'none';
+
+        // DSA section
+        var dsaView = document.getElementById('dsa-view');
+        dsaView.classList.remove('active');
+        dsaView.style.display = 'none';
+    }
+
+    /* CTA → Animate split into section picker */
     function enterManual() {
         var overlay = document.getElementById('landing-overlay');
+        var picker = document.getElementById('section-picker');
+
         var tl = gsap.timeline({
             onComplete: function () {
                 overlay.classList.add('hidden');
+                currentView = 'picker';
+            }
+        });
+
+        // Fade out landing elements
+        tl.to('#marquee-bg', { opacity: 0, duration: 0.4, ease: 'power2.in' })
+          .to('#landing-hero h1', { scale: 1.1, opacity: 0, duration: 0.35, ease: 'power2.in' }, '-=0.25')
+          .to('#landing-hero .tagline', { opacity: 0, y: -10, duration: 0.25 }, '-=0.25')
+          .to('#landing-hero .description', { opacity: 0, y: -8, duration: 0.2 }, '-=0.2')
+          .to('#landing-languages', { opacity: 0, y: -5, duration: 0.2 }, '-=0.2')
+          .to('#landing-cta', { opacity: 0, y: 20, duration: 0.25 }, '-=0.15')
+          .to(overlay, { opacity: 0, duration: 0.25, ease: 'power2.inOut' }, '-=0.1')
+          .add(function () {
+              // Show picker
+              picker.classList.remove('hidden');
+              gsap.set(picker, { opacity: 1 });
+
+              // Animate cards in (the "split" effect)
+              var cards = picker.querySelectorAll('.section-pick-card');
+              gsap.set(cards, { opacity: 0, scale: 0.8, y: 40 });
+
+              // Cards fly in from center, splitting left/right
+              gsap.set(cards[0], { x: 60 });
+              gsap.set(cards[1], { x: -60 });
+
+              gsap.to(cards[0], { opacity: 1, scale: 1, x: 0, y: 0, duration: 0.6, ease: 'back.out(1.4)', delay: 0.05 });
+              gsap.to(cards[1], { opacity: 1, scale: 1, x: 0, y: 0, duration: 0.6, ease: 'back.out(1.4)', delay: 0.15 });
+          });
+    }
+
+    /* Section picker → Development */
+    function enterDev() {
+        currentView = 'dev';
+        var picker = document.getElementById('section-picker');
+
+        gsap.to(picker, {
+            opacity: 0, duration: 0.3, ease: 'power2.in',
+            onComplete: function () {
+                picker.classList.add('hidden');
+
+                // Show dev sections
+                document.getElementById('sidebar').style.display = '';
+                document.getElementById('sidebar-toggle').style.display = '';
+                document.getElementById('sidebar-hover-zone').style.display = '';
+                document.getElementById('topnav').style.display = '';
+                document.getElementById('main').style.display = '';
+
+                // Re-initialize content renderer
+                ContentRenderer.init();
+                window.scrollTo({ top: 0, behavior: 'instant' });
+
+                // Animate in
+                gsap.from('#sidebar', { x: -40, opacity: 0, duration: 0.4, ease: 'power3.out' });
+                gsap.from('#topnav', { y: -20, opacity: 0, duration: 0.3, ease: 'power3.out', delay: 0.1 });
+                gsap.from('#main', { opacity: 0, y: 20, duration: 0.4, ease: 'power3.out', delay: 0.15 });
+            }
+        });
+    }
+
+    /* Section picker → DSA */
+    function enterDSA() {
+        currentView = 'dsa-grid';
+        var picker = document.getElementById('section-picker');
+
+        gsap.to(picker, {
+            opacity: 0, duration: 0.3, ease: 'power2.in',
+            onComplete: function () {
+                picker.classList.add('hidden');
+
+                // Show DSA view
+                var dsaView = document.getElementById('dsa-view');
+                dsaView.classList.add('active');
+                dsaView.style.display = 'block';
+
+                // Render category grid
+                DSARenderer.renderCategoryGrid();
                 window.scrollTo({ top: 0, behavior: 'instant' });
             }
         });
-        tl.to('#marquee-bg', { opacity: 0, duration: 0.5, ease: 'power2.in' })
-            .to('#landing-hero h1', { scale: 1.2, opacity: 0, duration: 0.45, ease: 'power2.in' }, '-=0.3')
-            .to('#landing-hero .tagline', { opacity: 0, y: -15, duration: 0.3 }, '-=0.35')
-            .to('#landing-hero .description', { opacity: 0, y: -10, duration: 0.25 }, '-=0.3')
-            .to('#landing-languages', { opacity: 0, y: -5, duration: 0.2 }, '-=0.25')
-            .to('#landing-cta', { opacity: 0, y: 30, duration: 0.3 }, '-=0.2')
-            .to(overlay, { opacity: 0, duration: 0.35, ease: 'power2.inOut' }, '-=0.15');
     }
 
-    /* Show landing page (logo click) */
+    /* Show section picker (from logo click or back buttons) */
+    function showSectionPicker() {
+        hideAllSections();
+
+        var picker = document.getElementById('section-picker');
+        picker.classList.remove('hidden');
+        gsap.set(picker, { opacity: 1 });
+
+        var cards = picker.querySelectorAll('.section-pick-card');
+        gsap.set(cards, { opacity: 0, scale: 0.9, y: 20 });
+        gsap.to(cards[0], { opacity: 1, scale: 1, y: 0, duration: 0.45, ease: 'back.out(1.3)', delay: 0.05 });
+        gsap.to(cards[1], { opacity: 1, scale: 1, y: 0, duration: 0.45, ease: 'back.out(1.3)', delay: 0.12 });
+
+        currentView = 'picker';
+    }
+
+    /* Show landing page (branding/logo click) */
     function showLandingPage() {
+        hideAllSections();
+
         var overlay = document.getElementById('landing-overlay');
         overlay.classList.remove('hidden');
         gsap.set(overlay, { opacity: 1 });
@@ -103,13 +214,16 @@
         gsap.set('#landing-languages', { opacity: 1, y: 0 });
         gsap.set('#landing-cta', { opacity: 1, y: 0 });
         buildMarqueeRows();
+
         var tl = gsap.timeline();
         tl.from('#marquee-bg', { opacity: 0, duration: 0.6, ease: 'power2.out' })
-            .from('#landing-hero h1', { opacity: 0, scale: 0.85, duration: 0.6, ease: 'back.out(1.5)' }, '-=0.3')
-            .from('#landing-hero .tagline', { opacity: 0, y: 20, duration: 0.4 }, '-=0.2')
-            .from('#landing-hero .description', { opacity: 0, y: 15, duration: 0.4 }, '-=0.2')
-            .from('#landing-languages', { opacity: 0, y: 10, duration: 0.3 }, '-=0.15')
-            .from('#landing-cta', { opacity: 0, y: 25, duration: 0.4 }, '-=0.15');
+          .from('#landing-hero h1', { opacity: 0, scale: 0.85, duration: 0.6, ease: 'back.out(1.5)' }, '-=0.3')
+          .from('#landing-hero .tagline', { opacity: 0, y: 20, duration: 0.4 }, '-=0.2')
+          .from('#landing-hero .description', { opacity: 0, y: 15, duration: 0.4 }, '-=0.2')
+          .from('#landing-languages', { opacity: 0, y: 10, duration: 0.3 }, '-=0.15')
+          .from('#landing-cta', { opacity: 0, y: 25, duration: 0.4 }, '-=0.15');
+
+        currentView = 'landing';
     }
 
     function initLandingPage() {
@@ -127,18 +241,31 @@
 
     /* ========== BOOTSTRAP ========== */
     document.addEventListener('DOMContentLoaded', function () {
-        // Initialize components
+        // Initialize sidebar (but hide it initially)
         SidebarController.init();
-        ContentRenderer.init();
+
+        // Hide dev sections initially — they show only when Dev is picked
+        document.getElementById('sidebar').style.display = 'none';
+        document.getElementById('sidebar-toggle').style.display = 'none';
+        document.getElementById('sidebar-hover-zone').style.display = 'none';
+        document.getElementById('topnav').style.display = 'none';
+        document.getElementById('main').style.display = 'none';
 
         // Landing page
         initLandingPage();
 
-        // CTA button
+        // CTA button → section picker
         var ctaBtn = document.getElementById('landing-cta-btn');
         if (ctaBtn) {
             ctaBtn.addEventListener('click', enterManual);
         }
+
+        // Section picker card clicks
+        document.getElementById('pick-dev').addEventListener('click', enterDev);
+        document.getElementById('pick-dsa').addEventListener('click', enterDSA);
+
+        // Back to landing from section picker
+        document.getElementById('picker-back-landing').addEventListener('click', showLandingPage);
 
         // Logo click → return to landing
         var logo = document.querySelector('#sidebar .logo');
@@ -151,6 +278,9 @@
     window.DevAtlasApp = {
         enterManual: enterManual,
         showLandingPage: showLandingPage,
+        showSectionPicker: showSectionPicker,
+        enterDev: enterDev,
+        enterDSA: enterDSA,
         SUPPORTED_LANGUAGES: SUPPORTED_LANGUAGES
     };
 })();
