@@ -38,7 +38,10 @@
     function renderSidebar() {
         var nav = document.getElementById('sidebar-nav');
         var langs = getLanguages();
-        var h = '';
+        var h = '<div class="sidebar-back-btn" id="dev-back-sections">';
+        h += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>';
+        h += 'Back to Sections';
+        h += '</div>';
         CATEGORIES.forEach(function (cat) {
             h += '<div class="sidebar-category">' + cat.name + '</div>';
             cat.langs.forEach(function (id) {
@@ -57,6 +60,16 @@
                 switchLanguage(el.dataset.langId);
             });
         });
+
+        // Back to sections
+        var backBtn = document.getElementById('dev-back-sections');
+        if (backBtn) {
+            backBtn.addEventListener('click', function () {
+                if (window.DevAtlasApp && window.DevAtlasApp.showSectionPicker) {
+                    window.DevAtlasApp.showSectionPicker();
+                }
+            });
+        }
     }
 
     function renderPills() {
@@ -112,6 +125,10 @@
         renderPills();
         renderContent();
         window.scrollTo({ top: 0, behavior: 'instant' });
+        // Save position for continue progress
+        if (window.DSAStore) {
+            window.DSAStore.savePosition('dev', { langId: id });
+        }
     }
 
     function scrollToSection(sectionId) {
@@ -168,9 +185,9 @@
 
     // Public API
     window.ContentRenderer = {
-        init: function () {
+        init: function (langId) {
             renderSidebar();
-            switchLanguage('html');
+            switchLanguage(langId || 'html');
         },
         switchLanguage: switchLanguage,
         getCategories: function () { return CATEGORIES; },

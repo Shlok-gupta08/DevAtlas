@@ -34,6 +34,7 @@ window.DSAData['searching-sorting'] = {
 }`,
                     timeComplexity: 'O(log n)',
                     spaceComplexity: 'O(1)',
+                    description: `Maintain a search range [low, high] and repeatedly compare the middle element with the target. Each comparison eliminates exactly half the remaining candidates, giving logarithmic performance on any sorted array.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Maintain a search range [low, high]. At each step, compare the middle element with the target and eliminate half the range.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -66,6 +67,7 @@ low=3, high=3 → mid=3, arr[3]=7 == 7 → return 3
 }`,
                     timeComplexity: 'O(log n)',
                     spaceComplexity: 'O(log n) — recursion stack',
+                    description: `Same halving logic as iterative binary search, expressed through recursive calls. The function calls itself with a narrower range each time, terminating when the element is found or the range is empty.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Same halving logic as the iterative version, but expressed through recursive calls. Each call reduces the search range by half.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -131,6 +133,7 @@ void insertionSort(vector<int>& arr) {
 }`,
                     timeComplexity: 'O(n²) worst/avg, O(n) best for Bubble & Insertion',
                     spaceComplexity: 'O(1)',
+                    description: `Three fundamental comparison-based sorts. Bubble sort repeatedly swaps adjacent elements, selection sort picks the minimum for each position, and insertion sort shifts elements to place each item in its correct position within the sorted prefix.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Three approaches to sorting with O(n²) time complexity, each with different strategies for organizing elements.</p>
 
 <p><strong>Algorithm Steps — Bubble Sort:</strong></p>
@@ -200,6 +203,7 @@ i=2: key=4, shift 5 right → [1,5,5] → insert 4 → [1,4,5]
 }`,
                     timeComplexity: 'O(log n)',
                     spaceComplexity: 'O(1)',
+                    description: `In a rotated sorted array, at least one half around mid is always properly sorted. Identify the sorted half, check if the target falls within that range, and search accordingly. This preserves O(log n) even when the array is rotated.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> In a rotated sorted array, at least one half (left or right of mid) is always properly sorted. Determine which half is sorted and check whether the target lies within that sorted range.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -258,6 +262,7 @@ low=4, high=4 → mid=4, nums[4]=0 == 0 → return 4
 }`,
                     timeComplexity: 'O(log n)',
                     spaceComplexity: 'O(1)',
+                    description: `Compare mid with mid+1 to determine which slope of the mountain you're on. If ascending, the peak is to the right; if descending, the peak is at mid or to the left. This binary decision eliminates half the search space each step.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> If arr[mid] &lt; arr[mid+1], the sequence is still ascending, so the peak lies to the right. Otherwise, mid could be the peak or the peak is to the left.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -305,6 +310,7 @@ low=1, high=1 → return 1
 }`,
                     timeComplexity: 'O(log n)',
                     spaceComplexity: 'O(1)',
+                    description: `In a sorted array where every element except one appears twice, pairs start at even indices. The single element disrupts this pattern. By checking whether the pair at mid is intact, we determine which half contains the unique element.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> In a properly paired sorted array, pairs start at even indices (0-1, 2-3, 4-5, ...). The single element disrupts this pairing. Binary search determines which side of mid the disruption lies on.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -361,6 +367,7 @@ void mergeSort(vector<int>& arr, int l, int r) {
 }`,
                     timeComplexity: 'O(n log n)',
                     spaceComplexity: 'O(n)',
+                    description: `Divide-and-conquer approach: recursively split the array into halves until you reach single elements (which are trivially sorted), then merge pairs of sorted halves by comparing elements from each side. The merge step does the actual sorting work.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Divide-and-conquer: recursively split the array into halves until single elements, then merge adjacent sorted halves by comparing elements from each side.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -410,6 +417,7 @@ void quickSort(vector<int>& arr, int low, int high) {
 }`,
                     timeComplexity: 'O(n log n) avg, O(n²) worst',
                     spaceComplexity: 'O(log n) — recursion stack',
+                    description: `Choose a pivot and partition the array so smaller elements go left and larger go right, placing the pivot in its final position. Then recurse on both halves. Average case is O(n log n) but worst case degrades to O(n²) with bad pivot choices.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Choose a pivot element, then partition the array so all elements smaller than the pivot are to its left and larger ones to its right. The pivot is now in its final sorted position. Recurse on the left and right partitions.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -475,6 +483,7 @@ long long countInversions(vector<int>& arr, int l, int r) {
 }`,
                     timeComplexity: 'O(n log n)',
                     spaceComplexity: 'O(n)',
+                    description: `Piggyback on merge sort's merge step: when a right-half element is placed before remaining left-half elements, each of those left elements forms an inversion. Count these cross-inversions during merge and combine with inversions from recursive calls.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> During the merge step of merge sort, when an element from the right half is placed before elements from the left half, every remaining element in the left half forms an inversion with it. Count these cross-inversions during merge, and add inversions found within each half from recursive calls.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -546,6 +555,7 @@ int allocateBooks(vector<int>& pages, int students) {
 }`,
                     timeComplexity: 'O(n log(sum))',
                     spaceComplexity: 'O(1)',
+                    description: `Binary search on the answer: the maximum pages any student reads. The search range is [max(pages), sum(pages)]. For each candidate value, a greedy check assigns books left-to-right, starting a new student when the limit would be exceeded, verifying feasibility.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Binary search on the answer — the maximum pages any student reads. The minimum possible answer is max(pages[i]) (every student must be able to handle at least the largest book). The maximum is sum(pages) (one student reads everything). For each candidate, greedily verify if the allocation is feasible.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -612,6 +622,7 @@ int minTimeToPaint(vector<int>& boards, int painters) {
 }`,
                     timeComplexity: 'O(n log(sum))',
                     spaceComplexity: 'O(1)',
+                    description: `Same structure as Book Allocation. Binary search on the maximum time any painter works. Painters must handle contiguous boards, so a greedy left-to-right assignment checks whether the candidate limit is feasible for the given number of painters.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Identical structure to Book Allocation. Binary search on the maximum time any painter works. Each painter must paint a contiguous set of boards. The greedy check assigns boards left to right, starting a new painter when the current load would exceed the candidate limit.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -678,6 +689,7 @@ int aggressiveCows(vector<int>& stalls, int cows) {
 }`,
                     timeComplexity: 'O(n log(range))',
                     spaceComplexity: 'O(1)',
+                    description: `Binary search on the minimum distance between any two cows. For each candidate distance, greedily place cows at the earliest valid stall maintaining that minimum gap. If all cows fit, the candidate is feasible; search for a larger distance.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Binary search on the answer — the minimum distance between any two cows. For each candidate distance, greedily check if all cows can be placed: put the first cow at the first stall, then place each subsequent cow at the earliest stall that is at least the candidate distance away.</p>
 
 <p><strong>Algorithm Steps:</strong></p>

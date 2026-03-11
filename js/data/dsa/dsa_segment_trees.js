@@ -47,6 +47,7 @@ public:
 };`,
                     timeComplexity: 'Build: O(n) | Query: O(log n)',
                     spaceComplexity: 'O(n)',
+                    description: `A segment tree stores aggregate values (sum, min, max) for array ranges in a binary tree. Leaves hold individual elements; internal nodes merge their children. Build recurses bottom-up in O(n), and queries recurse on overlapping segments in O(log n).`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> A segment tree stores aggregate information (sum, min, max) for array ranges in a binary tree. Leaves correspond to individual elements. Each internal node stores the merged result of its two children. This allows range queries in O(log n).</p>
 
 <p><strong>Algorithm Steps — Build:</strong></p>
@@ -111,6 +112,7 @@ Query(1, 0, 3, 1, 3):
 }`,
                     timeComplexity: 'O(log n)',
                     spaceComplexity: 'O(n)',
+                    description: `To update a single element, traverse from root to the target leaf following the index, then recalculate every ancestor on the way back up. Only the O(log n) nodes along the root-to-leaf path are modified.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> To update a single element, traverse from root to the target leaf, then recalculate all ancestors on the way back up. Only nodes along the root-to-leaf path are affected.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -191,6 +193,7 @@ public:
 };`,
                     timeComplexity: 'O(log n) per update/query',
                     spaceComplexity: 'O(n)',
+                    description: `Lazy propagation defers range updates by storing pending values at the deepest node fully covering the range. Tags are pushed down only when a future operation accesses children, reducing range updates from O(n) to O(log n).`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Without lazy propagation, a range update [l, r] would require updating every leaf individually — O(n). Lazy propagation defers updates: instead of pushing a change all the way down, we store a "pending" tag at the deepest node that fully covers the range. The tag is only pushed down when a future operation needs to access that node's children.</p>
 
 <p><strong>Algorithm Steps — Propagate:</strong></p>

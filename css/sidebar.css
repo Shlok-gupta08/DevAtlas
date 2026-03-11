@@ -3,6 +3,31 @@
    ========================================================================== */
 
 /* ========== SIDEBAR ========== */
+
+/* Back to Sections button in Dev sidebar */
+.sidebar-back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    margin: 8px 8px 4px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: #525252;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.sidebar-back-btn:hover {
+    background: #141414;
+    border-color: #1e1e1e;
+    color: #a3a3a3;
+}
+
 #sidebar {
     position: fixed;
     top: 10px;

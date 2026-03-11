@@ -18,11 +18,12 @@
 
     /* === SUPPORTED LANGUAGES (used for marquee + badges) === */
     var SUPPORTED_LANGUAGES = [
-        { key: 'html', name: 'HTML', color: '#fb923c', svg: '<svg viewBox="0 0 24 24"><path fill="#fb923c" d="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0z"/><text x="12" y="16.5" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold" font-family="Arial,sans-serif">5</text></svg>' },
-        { key: 'css', name: 'CSS', color: '#e879f9', svg: '<svg viewBox="0 0 24 24"><path fill="#e879f9" d="M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0z"/><text x="12" y="16.5" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold" font-family="Arial,sans-serif">3</text></svg>' },
+        { key: 'html', name: 'HTML', color: '#e44d26', svg: '<svg viewBox="0 0 24 24"><path fill="#e44d26" d="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0z"/><path fill="#f16529" d="M12 22.164l6.95-1.926L20.77 2.25H12v19.914z"/><text x="12" y="16.5" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold" font-family="Arial,sans-serif">5</text></svg>' },
+        { key: 'css', name: 'CSS', color: '#264de4', svg: '<svg viewBox="0 0 24 24"><path fill="#264de4" d="M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0z"/><path fill="#2965f1" d="M12 22.164l6.95-1.926L20.77 2.25H12v19.914z"/><text x="12" y="16.5" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold" font-family="Arial,sans-serif">3</text></svg>' },
         { key: 'javascript', name: 'JavaScript', color: '#fbbf24', svg: '<svg viewBox="0 0 24 24"><rect width="24" height="24" rx="2" fill="#fbbf24"/><text x="14.5" y="18" text-anchor="middle" fill="#000" font-size="11" font-weight="bold" font-family="Arial,sans-serif">JS</text></svg>' },
         { key: 'sql', name: 'SQL', color: '#38bdf8', svg: '<svg viewBox="0 0 24 24"><path fill="#38bdf8" d="M12 3C7.58 3 4 4.79 4 7s3.58 4 8 4 8-1.79 8-4-3.58-4-8-4zm0 9c-4.42 0-8-1.34-8-3v3c0 1.68 3.58 3 8 3s8-1.32 8-3v-3c0 1.66-3.58 3-8 3zm0 5c-4.42 0-8-1.34-8-3v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 1.66-3.58 3-8 3z"/></svg>' },
-        { key: 'git', name: 'Git', color: '#fb7185', svg: '<svg viewBox="0 0 24 24"><path fill="#fb7185" d="M23.546 10.93L13.067.452a1.55 1.55 0 00-2.188 0L8.708 2.627l2.76 2.76a1.838 1.838 0 012.327 2.341l2.66 2.66a1.838 1.838 0 11-1.103 1.03l-2.48-2.48v6.53a1.838 1.838 0 11-1.512-.06V8.783a1.838 1.838 0 01-.998-2.41L7.629 3.64.452 10.818a1.55 1.55 0 000 2.188l10.48 10.48a1.55 1.55 0 002.186 0l10.428-10.43a1.55 1.55 0 000-2.127z"/></svg>' }
+        { key: 'git', name: 'Git', color: '#fb7185', svg: '<svg viewBox="0 0 24 24"><path fill="#fb7185" d="M23.546 10.93L13.067.452a1.55 1.55 0 00-2.188 0L8.708 2.627l2.76 2.76a1.838 1.838 0 012.327 2.341l2.66 2.66a1.838 1.838 0 11-1.103 1.03l-2.48-2.48v6.53a1.838 1.838 0 11-1.512-.06V8.783a1.838 1.838 0 01-.998-2.41L7.629 3.64.452 10.818a1.55 1.55 0 000 2.188l10.48 10.48a1.55 1.55 0 002.186 0l10.428-10.43a1.55 1.55 0 000-2.127z"/></svg>' },
+        { key: 'cpp', name: 'C++ (DSA)', color: '#659ad2', svg: '<svg viewBox="0 0 24 24"><path fill="#659ad2" d="M22.394 6c-.167-.29-.398-.543-.652-.69L12.926.22c-.509-.294-1.34-.294-1.848 0L2.26 5.31c-.508.293-.923 1.013-.923 1.6v10.18c0 .294.104.62.271.91.167.29.398.543.652.69l8.816 5.09c.508.293 1.34.293 1.848 0l8.816-5.09c.254-.147.485-.4.652-.69.167-.29.27-.616.27-.91V6.91c.003-.294-.1-.62-.268-.91z"/><text x="12" y="16" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold" font-family="Arial,sans-serif">C++</text></svg>' }
     ];
 
     var NUM_MARQUEE_ROWS = 10;
@@ -216,6 +217,7 @@
         gsap.set('#landing-languages', { opacity: 1, y: 0 });
         gsap.set('#landing-cta', { opacity: 1, y: 0 });
         buildMarqueeRows();
+        updateContinueButton();
 
         var tl = gsap.timeline();
         tl.from('#marquee-bg', { opacity: 0, duration: 0.6, ease: 'power2.out' })
@@ -234,11 +236,31 @@
         document.getElementById('hero-desc').textContent = APP_DESCRIPTION;
         buildMarqueeRows();
         buildLanguageBadges();
+        updateContinueButton();
         gsap.from('#landing-hero h1', { opacity: 0, scale: 0.85, duration: 0.7, delay: 0.3, ease: 'back.out(1.5)' });
         gsap.from('#landing-hero .tagline', { opacity: 0, y: 20, duration: 0.5, delay: 0.7 });
         gsap.from('#landing-hero .description', { opacity: 0, y: 15, duration: 0.5, delay: 0.9 });
         gsap.from('#landing-languages', { opacity: 0, y: 10, duration: 0.4, delay: 1.0 });
         gsap.from('#landing-cta', { opacity: 0, y: 25, duration: 0.5, delay: 1.1 });
+    }
+
+    function updateContinueButton() {
+        var btn = document.getElementById('landing-continue-btn');
+        if (!btn) return;
+        var pos = window.DSAStore ? window.DSAStore.getPosition() : null;
+        if (pos && pos.view && pos.context) {
+            btn.classList.remove('hidden');
+            if (pos.view === 'dev') {
+                btn.textContent = 'Continue: Dev (' + (pos.context.langId || '').toUpperCase() + ') →';
+            } else if (pos.view === 'dsa') {
+                var catLabel = pos.context.catId ? pos.context.catId.replace(/_/g, ' ').replace(/\b\w/g, function(c){return c.toUpperCase();}) : 'DSA';
+                btn.textContent = 'Continue: DSA (' + catLabel + ') →';
+            } else {
+                btn.textContent = 'Continue Progress →';
+            }
+        } else {
+            btn.classList.add('hidden');
+        }
     }
 
     /* ========== BOOTSTRAP ========== */
@@ -260,6 +282,44 @@
         var ctaBtn = document.getElementById('landing-cta-btn');
         if (ctaBtn) {
             ctaBtn.addEventListener('click', enterManual);
+        }
+
+        // Continue Progress button → resume DSA position
+        var continueBtn = document.getElementById('landing-continue-btn');
+        if (continueBtn) {
+            continueBtn.addEventListener('click', function () {
+                var pos = window.DSAStore ? window.DSAStore.getPosition() : null;
+                if (!pos || !pos.view || !pos.context) return;
+
+                var overlay = document.getElementById('landing-overlay');
+                gsap.to(overlay, {
+                    opacity: 0, duration: 0.3, ease: 'power2.in',
+                    onComplete: function () {
+                        overlay.classList.add('hidden');
+
+                        if (pos.view === 'dsa' && pos.context.catId) {
+                            currentView = 'dsa-question';
+                            var dsaView = document.getElementById('dsa-view');
+                            dsaView.classList.add('active');
+                            dsaView.style.display = 'block';
+                            if (pos.context.filterId) {
+                                DSARenderer.renderFilteredView(pos.context.filterId);
+                            } else {
+                                DSARenderer.renderQuestionList(pos.context.catId, pos.context.questionId);
+                            }
+                        } else if (pos.view === 'dev' && pos.context.langId) {
+                            currentView = 'dev';
+                            document.getElementById('sidebar').style.display = '';
+                            document.getElementById('sidebar-toggle').style.display = '';
+                            document.getElementById('sidebar-hover-zone').style.display = '';
+                            document.getElementById('topnav').style.display = '';
+                            document.getElementById('main').style.display = '';
+                            ContentRenderer.init(pos.context.langId);
+                        }
+                        window.scrollTo({ top: 0, behavior: 'instant' });
+                    }
+                });
+            });
         }
 
         // Section picker card clicks

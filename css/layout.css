@@ -212,6 +212,11 @@
     position: relative;
     z-index: 2;
     margin-top: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
 #landing-cta button {

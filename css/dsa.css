@@ -210,6 +210,37 @@
     line-height: 1.6;
 }
 
+.dsa-header-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    height: 52px; /* approximate h1 line height to align with title center */
+}
+
+.dsa-github-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #0a0a0a;
+    border: 1px solid #1e1e1e;
+    color: #525252;
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.dsa-github-link:hover {
+    color: #fafafa;
+    background: #141414;
+    border-color: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.06);
+}
+
 .dsa-back-btn {
     display: inline-flex;
     align-items: center;
@@ -903,5 +934,1059 @@
 
     .dsa-topnav {
         left: 0;
+    }
+}
+
+/* ========== CONTINUE PROGRESS BUTTON ========== */
+#landing-continue-btn {
+    display: inline-flex;
+    margin-left: 16px;
+    border-color: rgba(96, 165, 250, 0.25) !important;
+    background: rgba(96, 165, 250, 0.06) !important;
+    color: #60a5fa !important;
+    box-shadow: 0 0 30px rgba(96, 165, 250, 0.06), inset 0 0 20px rgba(96, 165, 250, 0.03) !important;
+}
+
+#landing-continue-btn:hover {
+    background: rgba(96, 165, 250, 0.12) !important;
+    border-color: rgba(96, 165, 250, 0.5) !important;
+    box-shadow: 0 0 60px rgba(96, 165, 250, 0.15), inset 0 0 30px rgba(96, 165, 250, 0.05) !important;
+}
+
+#landing-continue-btn.hidden { display: none; }
+
+/* ========== CAT CUSTOM BADGE ========== */
+.cat-custom-badge {
+    font-size: 10px;
+    color: #a78bfa;
+    font-weight: 600;
+}
+
+/* ========== FILTER SECTION (DSA Homepage — compact inline) ========== */
+.dsa-filter-section {
+    margin: 0 48px 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    border-radius: 14px;
+    flex-wrap: wrap;
+}
+
+.dsa-filter-title {
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #525252;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.dsa-filter-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.dsa-filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    color: #a3a3a3;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.dsa-filter-pill:hover {
+    border-color: var(--filter-color, #525252);
+    background: color-mix(in srgb, var(--filter-color, #525252) 10%, transparent);
+    color: var(--filter-color, #fafafa);
+}
+
+.fp-icon { font-size: 15px; }
+.fp-label { font-size: 12.5px; }
+
+.fp-count {
+    background: var(--filter-color, #525252);
+    color: #000;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 8px;
+    border-radius: 999px;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* ========== FLOATING SIDEBAR ========== */
+.dsa-question-sidebar.floating {
+    border-radius: 14px;
+    top: 12px;
+    left: 12px;
+    bottom: 12px;
+    border: 1px solid #1a1a1a;
+    width: 310px;
+    min-width: 310px;
+}
+
+/* ========== SIDEBAR TICK MARK ========== */
+.qs-tick-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+/* ========== SIDEBAR CUSTOM GROUP ========== */
+.diff-group-label.custom {
+    color: #a78bfa;
+}
+
+.qs-custom-tag {
+    font-size: 12px;
+    color: #a78bfa;
+    min-width: 22px;
+    flex-shrink: 0;
+}
+
+.qs-item-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ========== ADD QUESTION BUTTON ========== */
+.qs-add-btn-wrap {
+    padding: 10px 14px;
+    border-top: 1px solid #1a1a1a;
+    flex-shrink: 0;
+}
+
+.qs-add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px dashed #2a2a2a;
+    color: #525252;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.qs-add-btn:hover {
+    border-color: #a78bfa;
+    color: #a78bfa;
+    background: rgba(167, 139, 250, 0.06);
+}
+
+/* ========== FILTER BAR (Question Detail) ========== */
+.q-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.q-filter-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #525252;
+    margin-right: 4px;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.q-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    color: #737373;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.q-filter-btn:hover {
+    border-color: var(--filter-color, #525252);
+    color: var(--filter-color, #fafafa);
+}
+
+.q-filter-btn.active {
+    background: color-mix(in srgb, var(--filter-color, #525252) 12%, transparent);
+    border-color: var(--filter-color, #525252);
+    color: var(--filter-color, #fafafa);
+}
+
+.qfb-icon { font-size: 13px; }
+.qfb-label { font-size: 11.5px; }
+
+/* ========== LEVEL SELECTOR ========== */
+.q-level-selector {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.q-level-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #525252;
+    margin-right: 4px;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.q-level-btn {
+    padding: 5px 14px;
+    border-radius: 8px;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    color: #737373;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.q-level-btn:hover {
+    border-color: var(--level-color, #525252);
+    color: var(--level-color, #fafafa);
+}
+
+.q-level-btn.active {
+    background: color-mix(in srgb, var(--level-color, #525252) 15%, transparent);
+    border-color: var(--level-color, #525252);
+    color: var(--level-color, #fafafa);
+}
+
+/* ========== FILTER INDICATOR ========== */
+.q-filter-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #a3a3a3;
+    margin-bottom: 20px;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+/* ========== CUSTOM QUESTION LABEL ========== */
+.q-custom-label {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #a78bfa;
+    background: rgba(167, 139, 250, 0.1);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+.q-delete-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.06);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+    margin-bottom: 24px;
+}
+
+.q-delete-custom:hover {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+/* ========== FILTERED VIEW ========== */
+.dsa-filtered-view {
+    padding: 48px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.fv-header {
+    margin-bottom: 32px;
+}
+
+.fv-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 10px;
+    background: #0a0a0a;
+    border: 1px solid #1e1e1e;
+    color: #525252;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+    margin-bottom: 20px;
+}
+
+.fv-back:hover {
+    background: #141414;
+    color: #d4d4d8;
+    border-color: #333;
+}
+
+.fv-title {
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+}
+
+.fv-count {
+    font-size: 13px;
+    color: #525252;
+    font-weight: 600;
+}
+
+.fv-empty {
+    margin-top: 48px;
+    text-align: center;
+    font-size: 14px;
+    color: #525252;
+    line-height: 1.8;
+}
+
+.fv-cat-group {
+    margin-bottom: 24px;
+}
+
+.fv-cat-name {
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #a3a3a3;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.fv-cat-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fv-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.fv-item:hover {
+    background: #141414;
+    border-color: #2a2a2a;
+}
+
+.fv-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.fv-item-title {
+    font-size: 13.5px;
+    color: #d4d4d8;
+    font-weight: 500;
+}
+
+.fv-item-level {
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: auto;
+}
+
+/* ========== DIALOG OVERLAY ========== */
+.dialog-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: dialogFadeIn 0.2s ease;
+}
+
+@keyframes dialogFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.dialog-box {
+    background: #0f0f0f;
+    border: 1px solid #1e1e1e;
+    border-radius: 18px;
+    max-width: 680px;
+    width: 92%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    animation: dialogSlideUp 0.25s ease;
+    overflow: hidden;
+}
+
+.dialog-box .dialog-title {
+    padding: 28px 32px 0;
+}
+
+.dialog-scroll-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 32px 8px;
+}
+
+.dialog-scroll-body::-webkit-scrollbar { width: 4px; }
+.dialog-scroll-body::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 99px; }
+
+@keyframes dialogSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Delete dialog uses simpler layout */
+.delete-q-dialog {
+    padding: 32px;
+    max-width: 440px;
+}
+
+.delete-q-dialog .dialog-title {
+    padding: 0;
+}
+
+.dialog-title {
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fafafa;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+}
+
+.dialog-msg {
+    font-size: 14px;
+    color: #a3a3a3;
+    line-height: 1.7;
+    margin-bottom: 24px;
+}
+
+.dialog-field {
+    margin-bottom: 18px;
+}
+
+.dialog-field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #737373;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.dialog-req {
+    color: #ef4444;
+}
+
+.dialog-field input[type="text"],
+.dialog-field textarea,
+.dialog-field select {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    color: #fafafa;
+    font-size: 13.5px;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+    transition: border-color 0.2s ease;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.dialog-field input[type="text"]:focus,
+.dialog-field textarea:focus,
+.dialog-field select:focus {
+    border-color: #a78bfa;
+}
+
+.dialog-code-area {
+    font-family: 'Google Sans Code', 'JetBrains Mono', monospace !important;
+    font-size: 13px !important;
+    line-height: 1.6;
+    resize: vertical;
+}
+
+.dialog-charcount {
+    display: block;
+    text-align: right;
+    font-size: 11px;
+    color: #404040;
+    margin-top: 4px;
+}
+
+/* Difficulty chooser */
+.dialog-diff-chooser {
+    display: flex;
+    gap: 8px;
+}
+
+.dialog-diff-btn {
+    flex: 1;
+    padding: 8px;
+    border-radius: 8px;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.dialog-diff-btn.easy {
+    color: #525252;
+}
+
+.dialog-diff-btn.easy.selected,
+.dialog-diff-btn.easy:hover {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: rgba(34, 197, 94, 0.3);
+    color: #22c55e;
+}
+
+.dialog-diff-btn.medium {
+    color: #525252;
+}
+
+.dialog-diff-btn.medium.selected,
+.dialog-diff-btn.medium:hover {
+    background: rgba(234, 179, 8, 0.1);
+    border-color: rgba(234, 179, 8, 0.3);
+    color: #eab308;
+}
+
+.dialog-diff-btn.hard {
+    color: #525252;
+}
+
+.dialog-diff-btn.hard.selected,
+.dialog-diff-btn.hard:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+/* Test case rows in dialog */
+.dialog-tc-row {
+    padding: 10px;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
+.tc-row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #525252;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.tc-remove {
+    background: none;
+    border: none;
+    color: #525252;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 4px;
+    transition: color 0.2s ease;
+}
+
+.tc-remove:hover {
+    color: #ef4444;
+}
+
+.dialog-tc-row input {
+    width: 100%;
+    padding: 7px 10px;
+    border-radius: 6px;
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    color: #fafafa;
+    font-size: 12.5px;
+    margin-bottom: 6px;
+    font-family: 'Google Sans Code', 'JetBrains Mono', monospace;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.dialog-tc-row input:focus {
+    border-color: #a78bfa;
+}
+
+.dialog-add-tc {
+    display: inline-flex;
+    padding: 6px 14px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px dashed #2a2a2a;
+    color: #525252;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.dialog-add-tc:hover {
+    border-color: #a78bfa;
+    color: #a78bfa;
+}
+
+.dialog-lang-row {
+    margin-bottom: 8px;
+}
+
+.dialog-lang-row select {
+    width: auto;
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+/* Dialog actions */
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+/* Sticky dialog actions (for add question dialog) */
+.dialog-actions-sticky {
+    display: flex;
+    gap: 0;
+    padding: 0;
+    border-top: 1px solid #1e1e1e;
+    flex-shrink: 0;
+}
+
+.dialog-actions-sticky .dialog-cancel,
+.dialog-actions-sticky .dialog-save {
+    flex: 1;
+    border-radius: 0;
+    border: none;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.dialog-actions-sticky .dialog-cancel {
+    border-bottom-left-radius: 18px;
+    border-right: 1px solid #1e1e1e;
+}
+
+.dialog-actions-sticky .dialog-save {
+    border-bottom-right-radius: 18px;
+}
+
+.dialog-cancel {
+    padding: 10px 24px;
+    border-radius: 10px;
+    background: rgba(239, 68, 68, 0.06);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.dialog-cancel:hover {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+.dialog-save {
+    padding: 10px 24px;
+    border-radius: 10px;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    color: #22c55e;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.dialog-save:hover {
+    background: rgba(34, 197, 94, 0.18);
+    border-color: rgba(34, 197, 94, 0.45);
+}
+
+.dialog-delete {
+    padding: 10px 24px;
+    border-radius: 10px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.dialog-delete:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.5);
+}
+
+/* ========== LANGUAGE CHOOSER (horizontal buttons in dialog) ========== */
+.dialog-lang-chooser {
+    display: flex;
+    gap: 8px;
+}
+
+.dialog-lang-btn {
+    flex: 1;
+    padding: 8px;
+    border-radius: 8px;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    color: #525252;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.dialog-lang-btn:hover,
+.dialog-lang-btn.selected {
+    background: rgba(167, 139, 250, 0.1);
+    border-color: rgba(167, 139, 250, 0.3);
+    color: #a78bfa;
+}
+
+/* ========== PERSONAL NOTES ========== */
+.q-notes-section {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #1a1a1a;
+}
+
+.q-notes-title {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #d4d4d8;
+    margin-bottom: 8px;
+    padding: 0;
+}
+
+.q-notes-title::placeholder {
+    color: #333;
+}
+
+.q-notes-textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    color: #a3a3a3;
+    font-size: 13.5px;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+    line-height: 1.7;
+    resize: none;
+    overflow: hidden;
+    outline: none;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.q-notes-textarea:focus {
+    border-color: #a78bfa;
+}
+
+.q-notes-textarea::placeholder {
+    color: #333;
+}
+
+/* ========== SIDEBAR TRASH ICON (custom questions) ========== */
+.qs-trash-icon {
+    display: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-left: auto;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.qs-trash-icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.qs-edit-icon {
+    display: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-left: auto;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.qs-edit-icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.qs-item:hover .qs-trash-icon,
+.qs-item:hover .qs-edit-icon {
+    display: inline-flex;
+}
+
+.qs-trash-icon:hover {
+    opacity: 1;
+}
+
+.qs-edit-icon:hover {
+    opacity: 1;
+}
+
+/* ========== CUSTOM QUESTION ACTIONS (detail area) ========== */
+.q-custom-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.q-edit-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    border-radius: 8px;
+    background: rgba(167, 139, 250, 0.06);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    color: #a78bfa;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+}
+
+.q-edit-custom:hover {
+    background: rgba(167, 139, 250, 0.12);
+    border-color: rgba(167, 139, 250, 0.4);
+}
+
+.q-edit-custom svg,
+.q-delete-custom svg {
+    flex-shrink: 0;
+}
+
+/* ========== COMPLEXITY INPUT WRAP ========== */
+.complexity-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: #111;
+    border: 1px solid #1e1e1e;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+}
+
+.complexity-input-wrap:focus-within {
+    border-color: #a78bfa;
+}
+
+.complexity-prefix,
+.complexity-suffix {
+    padding: 10px 6px;
+    color: #525252;
+    font-size: 13.5px;
+    font-family: 'Google Sans Code', 'JetBrains Mono', monospace;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.complexity-prefix {
+    padding-left: 12px;
+}
+
+.complexity-suffix {
+    padding-right: 12px;
+}
+
+.complexity-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fafafa;
+    font-size: 13.5px;
+    font-family: 'Google Sans Code', 'JetBrains Mono', monospace;
+    padding: 10px 2px;
+    min-width: 0;
+}
+
+.dialog-hint {
+    display: block;
+    font-size: 11px;
+    color: #404040;
+    margin-top: 6px;
+    line-height: 1.5;
+}
+
+/* ========== DELETE DIALOG STICKY ACTIONS ========== */
+.delete-q-dialog .dialog-actions-sticky {
+    margin-top: 24px;
+    border-radius: 0 0 18px 18px;
+}
+
+.delete-q-dialog .dialog-actions-sticky .dialog-cancel {
+    border-bottom-left-radius: 18px;
+    border-right: 1px solid #1e1e1e;
+}
+
+.delete-q-dialog .dialog-actions-sticky .dialog-delete {
+    flex: 1;
+    border-radius: 0;
+    border: none;
+    border-bottom-right-radius: 18px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* ========== FILTERED VIEW SIDEBAR TOGGLE ========== */
+.fv-toggle-arrow {
+    font-size: 12px;
+    margin-left: 4px;
+    color: #525252;
+}
+
+.fv-cat-items-wrap {
+    /* smoothly collapse */
+}
+
+.fv-sidebar-group .qs-item {
+    padding-left: 16px;
+}
+
+/* ========== RESPONSIVE — UPDATED FOR NEW FEATURES ========== */
+@media (max-width: 900px) {
+    .dsa-filter-section {
+        margin: 0 20px 8px;
+    }
+
+    .dsa-filter-pills {
+        gap: 6px;
+    }
+
+    .dsa-filtered-view {
+        padding: 32px 20px;
+    }
+
+    .dsa-question-sidebar.floating {
+        width: 260px;
+        min-width: 260px;
+        border-radius: 0;
+        top: 0;
+        left: 0;
+        bottom: 0;
+    }
+}
+
+@media (max-width: 640px) {
+    .dsa-question-sidebar.floating {
+        width: 100%;
+        position: relative;
+        border-radius: 0;
+        top: auto;
+        left: auto;
+        bottom: auto;
+        border-right: none;
+        border-bottom: 1px solid #1a1a1a;
+    }
+
+    .q-filter-bar {
+        gap: 6px;
+    }
+
+    .q-filter-btn {
+        padding: 5px 10px;
+        font-size: 11px;
     }
 }

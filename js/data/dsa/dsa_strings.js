@@ -34,6 +34,7 @@ window.DSAData['strings'] = {
 }`,
                     timeComplexity: 'O(n)',
                     spaceComplexity: 'O(1)',
+                    description: `Two pointers converge from both ends, skipping non-alphanumeric characters and comparing case-insensitively. If every pair matches, the string reads the same forwards and backwards.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Use two pointers from both ends, skipping non-alphanumeric characters, and compare characters case-insensitively. If all pairs match, the string is a palindrome.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -99,6 +100,7 @@ Return true
 }`,
                     timeComplexity: 'O(n)',
                     spaceComplexity: 'O(n)',
+                    description: `Build a cleaned string with single-spaced words, reverse the entire thing (putting words in correct order but each word reversed), then reverse individual words to restore them. Two reversals produce the desired outcome.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> First build a cleaned string (single spaces, no leading/trailing). Then reverse the entire string (puts words in correct order but each word is backwards). Finally, reverse each individual word to restore it.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -148,6 +150,7 @@ Result: "blue is sky the"
 }`,
                     timeComplexity: 'O(n)',
                     spaceComplexity: 'O(1) — fixed 26-size array',
+                    description: `Two strings are anagrams if they share identical character frequencies. Increment counts for the first string and decrement for the second using a fixed-size array. If every count is zero at the end, the strings are anagrams.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Two strings are anagrams if and only if they have identical character frequency distributions. Increment counts for the first string, decrement for the second. If all counts reach zero, they are anagrams.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -192,6 +195,7 @@ All zeros → return true
 }`,
                     timeComplexity: 'O(n)',
                     spaceComplexity: 'O(1)',
+                    description: `Two-pass approach: the first pass counts character frequencies, the second pass scans the string in order and returns the index of the first character whose count is exactly one. The 26-element frequency array uses constant space.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Count each character's frequency in a first pass. In a second pass, return the index of the first character with frequency 1.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -247,6 +251,7 @@ Second pass:
 }`,
                     timeComplexity: 'O(n × m) where m = part length',
                     spaceComplexity: 'O(n)',
+                    description: `Build the result string character by character as a stack. After each addition, check if the tail matches the target substring and erase it if so. This naturally handles overlapping and nested occurrences without multiple passes.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Build the result string character by character, treating it like a stack. After each addition, check if the tail of the result matches the pattern. If it does, erase the pattern from the tail. This naturally handles overlapping and nested occurrences.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -303,6 +308,7 @@ Return "ab"
 }`,
                     timeComplexity: 'O(n)',
                     spaceComplexity: 'O(1)',
+                    description: `A permutation has identical character frequencies to the original string. Slide a fixed-size window over s2 maintaining a frequency count. When the window's distribution matches s1's, a permutation exists at that position.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> A permutation has the same character frequencies as the original. Slide a window of size |s1| over s2, maintaining a frequency count. If the window's frequency matches s1's frequency at any position, a permutation exists.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -356,6 +362,7 @@ Return true
 }`,
                     timeComplexity: 'O(n)',
                     spaceComplexity: 'O(1)',
+                    description: `Read and write pointers traverse the array together. The read pointer counts groups of consecutive identical characters while the write pointer compresses them in-place. Since the compressed form is never longer, the write pointer never overtakes the read pointer.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Use read and write pointers. The read pointer scans groups of consecutive identical characters. The write pointer places the character and its count (if &gt; 1). The write pointer never overtakes the read pointer, so in-place modification is safe.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -411,6 +418,7 @@ Return 6, chars = ["a","2","b","2","c","3"]
 }`,
                     timeComplexity: 'O(n)',
                     spaceComplexity: 'O(1)',
+                    description: `Track net displacement along x and y axes as you process directional moves. Opposite directions cancel naturally. The remaining net displacement gives the shortest path from origin to the final position.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Track net displacement in x and y coordinates. Opposite directions cancel out naturally (L cancels R, U cancels D). The remaining net displacement defines the shortest path.</p>
 
 <p><strong>Algorithm Steps:</strong></p>

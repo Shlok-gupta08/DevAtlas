@@ -29,6 +29,7 @@ window.DSAData['recursion-backtracking'] = {
 }`,
                     timeComplexity: 'O(n)',
                     spaceComplexity: 'O(n)',
+                    description: `Plain recursion recomputes the same subproblems exponentially. Memoization stores each result in a dp array so every subproblem is solved exactly once, reducing time from O(2^n) to O(n) at the cost of O(n) space.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Plain recursion is O(2^n) due to overlapping subproblems. Memoization stores computed results in an array so each subproblem is solved only once.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -66,6 +67,7 @@ fib(5) → 3 + dp[3]=2 = 5  → dp[5] = 5   (dp[3] already cached)
 }`,
                     timeComplexity: 'O(n)',
                     spaceComplexity: 'O(1)',
+                    description: `Since F(n) depends only on the previous two values, a full array is unnecessary. Two rolling variables track F(n-1) and F(n-2), achieving O(1) space while building up iteratively from the base cases.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Since F(n) depends only on the two preceding values, there is no need to store the entire array. Two variables suffice.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -115,6 +117,7 @@ Return 5
 }`,
                     timeComplexity: 'O(n)',
                     spaceComplexity: 'O(1)',
+                    description: `Each column either gets a vertical tile (reducing to n-1) or pairs with the next column for two horizontal tiles (reducing to n-2). This gives the Fibonacci recurrence ways(n) = ways(n-1) + ways(n-2), solvable with two rolling variables.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> For the n-th column, either place one vertical tile (reducing the problem to 2×(n−1)) or place two horizontal tiles (reducing to 2×(n−2)). This gives the recurrence ways(n) = ways(n−1) + ways(n−2), which is the Fibonacci pattern.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -161,6 +164,7 @@ Return 5
 }`,
                     timeComplexity: 'O(n)',
                     spaceComplexity: 'O(1)',
+                    description: `Person n either stays single (f(n-1) ways for the rest) or pairs with one of n-1 others (each leaving f(n-2) arrangements). The recurrence f(n) = f(n-1) + (n-1)*f(n-2) captures both choices and is computed with two rolling variables.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Person n has two choices — stay single (leaving f(n−1) arrangements for the rest) or pair with any of the (n−1) other people (leaving f(n−2) arrangements for those remaining). This gives f(n) = f(n−1) + (n−1) × f(n−2).</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -207,6 +211,7 @@ Return 10
 }`,
                     timeComplexity: 'O(n)',
                     spaceComplexity: 'O(1)',
+                    description: `Track strings ending in 0 and strings ending in 1 separately. Appending 0 is always valid, but appending 1 is only valid after a 0. This two-variable DP avoids consecutive 1s while counting all valid binary strings of length n.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Track two categories separately — strings ending in 0 and strings ending in 1. A '0' can follow either ending, but a '1' can only follow a '0' (to prevent consecutive 1s).</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -266,6 +271,7 @@ vector<vector<int>> subsetsWithDup(vector<int>& nums) {
 }`,
                     timeComplexity: 'O(n × 2^n)',
                     spaceComplexity: 'O(n) — recursion depth',
+                    description: `At each index, decide include or exclude to generate all subsets. Sort first for duplicate handling: if consecutive elements are equal and the previous was not included, skip the current to avoid duplicate subsets. Every node in the recursion tree yields a valid subset.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> At each index, decide whether to include the current element. The backtracking framework adds the current partial subset to the result at every node of the recursion tree, then explores further elements.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -322,6 +328,7 @@ Result: [[], [1], [1,2], [1,2,2], [2], [2,2]]
 }`,
                     timeComplexity: 'O(n! × n)',
                     spaceComplexity: 'O(n) — recursion depth',
+                    description: `Fix each element at position idx by swapping it with every candidate from idx to n-1. After recursing for the next position, swap back to restore the original order. This generates all n! permutations without extra data structures.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Fix each element at position idx by swapping it with every element from idx to n−1. Recurse for the next position, then swap back to restore the original order before trying the next candidate.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -387,6 +394,7 @@ vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
 }`,
                     timeComplexity: 'O(2^target) approximately',
                     spaceComplexity: 'O(target) — max recursion depth',
+                    description: `Sort candidates for early termination. Try including each candidate from the current index onwards, allowing reuse (same index passed recursively). Subtract from the remaining target and prune when a candidate exceeds it.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Sort the candidates for early termination. At each level, try including each candidate from the current index onwards. Pass the same index i (not i+1) since elements can be reused. Subtract the chosen value from the target and prune when a candidate exceeds the remaining target.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -446,6 +454,7 @@ void solve(string& s, int idx, vector<string>& curr, vector<vector<string>>& res
 }`,
                     timeComplexity: 'O(n × 2^n)',
                     spaceComplexity: 'O(n)',
+                    description: `Try every possible cut position from the current index. Extend the substring one character at a time, checking if it forms a palindrome. When it does, add it to the current partition and recurse from the next position. Backtrack to explore all valid partitions.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Try every possible first-cut position. For each starting index, extend the substring and check if it forms a palindrome. If it does, add the substring to the current partition and recurse from the position right after it.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -496,6 +505,7 @@ Result: [["a","a","b"], ["aa","b"]]
 }`,
                     timeComplexity: 'O(m × n)',
                     spaceComplexity: 'O(n)',
+                    description: `Paths to cell (i,j) equals paths from above plus paths from the left. A 1D dp array represents the current row; updating left-to-right accumulates path counts since dp[j] += dp[j-1] incorporates both directions in a single pass per row.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> From (0,0) to (m−1, n−1), movement is restricted to right and down. The number of paths to cell (i, j) = paths to (i−1, j) + paths to (i, j−1). The first row and first column always have exactly 1 path each.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -528,6 +538,7 @@ Return 6
 }`,
                     timeComplexity: 'O(min(m, n))',
                     spaceComplexity: 'O(1)',
+                    description: `The grid path problem is equivalent to choosing which moves are "down" from a total of (m+n-2) moves. The answer is C(m+n-2, m-1), computed iteratively with multiply-then-divide to stay within integer bounds.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> The robot must make exactly (m−1) down moves and (n−1) right moves, for a total of (m+n−2) moves. The number of distinct orderings is C(m+n−2, m−1) — choosing which of the total moves are "down".</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -588,6 +599,7 @@ void solve(vector<string>& board, int row, int n, vector<vector<string>>& result
 }`,
                     timeComplexity: 'O(n!)',
                     spaceComplexity: 'O(n²)',
+                    description: `Place queens row by row, trying every column. Before placement, verify the cell is safe by checking the column and both diagonals above. If safe, place and recurse to the next row. If no column works on a given row, backtrack to the previous row.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Place queens row by row. For each row, try every column. Before placing, verify the cell is safe — no other queen occupies the same column or either diagonal above. If safe, place and recurse to the next row. If no column works, backtrack.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -662,6 +674,7 @@ bool solve(vector<vector<char>>& board) {
 }`,
                     timeComplexity: 'O(9^(empty cells))',
                     spaceComplexity: 'O(1) — modifies board in place',
+                    description: `Scan for the first empty cell and try digits 1–9. Validate each against row, column, and 3x3 box constraints. If valid, place it and recurse. If recursion succeeds, propagate success; otherwise reset the cell and try the next digit.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> Scan the board for the first empty cell. Try placing digits 1–9 in that cell. For each digit, validate against Sudoku constraints (no duplicate in row, column, or 3×3 box). If valid, place it and recurse. If recursion succeeds, propagate success. If no digit works, reset and backtrack.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -720,6 +733,7 @@ Try '1': check row (no 1), column (no 1), box (no 1) → valid → place '1'
 }`,
                     timeComplexity: 'O(4^(n²))',
                     spaceComplexity: 'O(n²)',
+                    description: `From the start cell, explore all four directions in lexicographic order (D, L, R, U). Mark cells visited to avoid revisiting. When the destination is reached, record the accumulated path string. Backtrack by unmarking and removing the last direction.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> From (0,0), explore all four directions in lexicographic order (D, L, R, U). Mark cells as visited to avoid revisiting. When the destination (n−1, n−1) is reached, record the accumulated path string. Backtrack by unmarking the cell and removing the last direction character.</p>
 
 <p><strong>Algorithm Steps:</strong></p>
@@ -779,6 +793,7 @@ Result: ["DR", "RD"]
 }`,
                     timeComplexity: 'O(8^(n²))',
                     spaceComplexity: 'O(n²)',
+                    description: `Visit every cell on an n×n board exactly once using L-shaped knight moves. From each position, try all 8 possible moves. Mark each cell with a move number, recurse for the next move, and backtrack if no valid continuation exists.`,
                     detailedWalkthrough: `<p><strong>Core Idea:</strong> A knight must visit every cell on an n×n board exactly once. Use backtracking: from the current cell, try all 8 possible L-shaped moves. If the target cell is valid and unvisited, mark it with the move number and recurse. If all n² cells are visited, return success. Otherwise, reset and try the next move.</p>
 
 <p><strong>Algorithm Steps:</strong></p>

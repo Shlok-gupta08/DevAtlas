@@ -56,6 +56,22 @@ DevAtlas is organized into major domains, each broken down into exhaustive secti
 
 All DSA problems include a **problem description**, **3 test cases**, **C++ solution** with complexity analysis, and a **detailed walkthrough** with step-by-step trace.
 
+### 🔧 DSA Features
+| Feature | Description |
+|---------|-------------|
+| **Multi-Filter System** | Mark questions with multiple filters (Completed, Review Later, Revisit, In Progress, Skipped) — not exclusive, a question can carry several labels at once |
+| **Difficulty-Based Tick Marks** | Completed questions show colored tick marks based on question difficulty (green / yellow / red) rather than filter level |
+| **Level Selector** | Filters with levels (Completed, Revisit) show a temporary inline level chooser that auto-dismisses after selection, displayed as bracket label on the button |
+| **Personal Notes** | Auto-expanding textarea at the bottom of every question for personal annotations — saved per-question to localStorage |
+| **Custom Questions** | Add your own questions to any category with title, difficulty, test cases, multi-language code (C++, C, Python, Java), overview, and detailed walkthrough |
+| **Custom Question Grouping** | Custom questions listed as a single sorted list in sidebar with hover-visible edit and trash icons (SVG) |
+| **Edit Custom Questions** | Edit any custom question's title, difficulty, test cases, code, complexity, overview, and walkthrough — same dialog as creation, pre-filled with existing data |
+| **Filtered View** | Full question view with floating sidebar organized by data structure category, collapsible headings, difficulty-colored dots, level labels in (Easy)/(Medium)/(Hard) format, prev/next navigation, and all approach tabs |
+| **Compact Inline Filters** | DSA homepage shows progress filters as a single compact row — no collapse/expand needed |
+| **Universal Continue Progress** | Resume from last position across both DSA and Dev sections from the landing page — shows "Continue: DSA (Category)" or "Continue: Dev (LANG)" label. DSA continuation supports filtered view positions |
+| **Add Question Dialog** | Wider dialog with inner scroll, persistent half-and-half Cancel (red) / Save (green) buttons, 4 horizontal language buttons (C++ default), overview and walkthrough fields, complexity fields displayed within O() wrapper with superscript conversion (n^2 → n²) |
+| **GSAP Animations** | Filter selection, card reveals, level selector appearance/dismissal, and view transitions all use smooth GSAP animations |
+
 ### 🧩 Coming Soon
 | Topic | Planned Coverage |
 |-------|------------------|
@@ -140,6 +156,7 @@ DevAtlas/
 │   ├── components/
 │   │   ├── sidebar.js          # Sidebar toggle logic (window.SidebarController)
 │   │   ├── contentRender.js    # Dev content rendering engine (window.ContentRenderer)
+│   │   ├── dsaStore.js         # DSA persistence layer — filters, notes, position (window.DSAStore)
 │   │   └── dsaRenderer.js      # DSA rendering engine (window.DSARenderer)
 │   │
 │   └── app.js                  # Main init — landing page, branding, bootstrap
@@ -200,6 +217,11 @@ Contributions are welcome! Here's how you can help:
 - [x] SQL comprehensive reference with query output tables
 - [x] Git comprehensive reference
 - [x] Data Structures & Algorithms (DSA) — 150+ problems across 15 categories
+- [x] Multi-filter progress tracking system
+- [x] Personal notes per question
+- [x] Custom question support with multi-language code
+- [x] Filtered view with full sidebar navigation
+- [x] Universal continue progress (DSA + Dev)
 - [ ] Python reference
 - [ ] Java reference
 - [ ] C/C++ reference
@@ -208,7 +230,7 @@ Contributions are welcome! Here's how you can help:
 - [ ] CI/CD & DevOps guides
 - [ ] Shell scripting reference
 - [ ] Networking & API design
-- [ ] Search / filter functionality
+- [x] Search / filter functionality
 - [ ] Bookmark & favorites system
 - [x] Landing homepage with animated marquee
 - [ ] PWA support for offline access
