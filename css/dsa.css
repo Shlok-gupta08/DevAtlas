@@ -1228,7 +1228,6 @@
     cursor: pointer;
     transition: all 0.25s ease;
     font-family: 'Google Sans', 'DM Sans', sans-serif;
-    margin-bottom: 24px;
 }
 
 .q-delete-custom:hover {
@@ -1781,13 +1780,26 @@
 }
 
 /* ========== SIDEBAR TRASH ICON (custom questions) ========== */
-.qs-trash-icon {
+/* ========== SIDEBAR CUSTOM QUESTION ICONS ========== */
+.qs-custom-icons {
     display: none;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.qs-item:hover .qs-custom-icons {
+    display: inline-flex;
+}
+
+.qs-trash-icon {
     cursor: pointer;
     flex-shrink: 0;
-    margin-left: auto;
     opacity: 0.6;
     transition: opacity 0.2s ease;
+    display: inline-flex;
+    align-items: center;
 }
 
 .qs-trash-icon svg {
@@ -1796,22 +1808,17 @@
 }
 
 .qs-edit-icon {
-    display: none;
     cursor: pointer;
     flex-shrink: 0;
-    margin-left: auto;
     opacity: 0.6;
     transition: opacity 0.2s ease;
+    display: inline-flex;
+    align-items: center;
 }
 
 .qs-edit-icon svg {
     width: 14px;
     height: 14px;
-}
-
-.qs-item:hover .qs-trash-icon,
-.qs-item:hover .qs-edit-icon {
-    display: inline-flex;
 }
 
 .qs-trash-icon:hover {
@@ -1989,4 +1996,47 @@
         padding: 5px 10px;
         font-size: 11px;
     }
+}
+
+/* ========== MODULE PROGRESS TRACKING ========== */
+.cat-progress {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #525252;
+    font-family: 'Google Sans', 'DM Sans', sans-serif;
+    letter-spacing: 0.3px;
+}
+
+.cat-progress-done {
+    font-style: italic;
+    color: #22c55e;
+}
+
+/* ========== FILTER DIVIDER ========== */
+.dsa-filter-divider {
+    width: 1px;
+    align-self: stretch;
+    background: #2a2a2a;
+    flex-shrink: 0;
+    margin: 0 6px;
+}
+
+/* ========== DIALOG PLACEHOLDER FIX ========== */
+.dialog-field input::placeholder,
+.dialog-field textarea::placeholder,
+.complexity-input::placeholder {
+    color: #525252;
+    opacity: 1;
+}
+
+/* ========== SUP TIGHTEN ========== */
+.complexity-badge sup {
+    vertical-align: super;
+    font-size: 0.7em;
+    line-height: 0;
+    margin: 0;
+    padding: 0;
 }

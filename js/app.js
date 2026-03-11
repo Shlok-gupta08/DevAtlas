@@ -253,8 +253,13 @@
             if (pos.view === 'dev') {
                 btn.textContent = 'Continue: Dev (' + (pos.context.langId || '').toUpperCase() + ') →';
             } else if (pos.view === 'dsa') {
-                var catLabel = pos.context.catId ? pos.context.catId.replace(/_/g, ' ').replace(/\b\w/g, function(c){return c.toUpperCase();}) : 'DSA';
-                btn.textContent = 'Continue: DSA (' + catLabel + ') →';
+                var catLabel = pos.context.catId ? pos.context.catId.replace(/-/g, ' ').replace(/_/g, ' ').replace(/\b\w/g, function(c){return c.toUpperCase();}) : 'DSA';
+                if (pos.context.filterId) {
+                    var filterLabel = pos.context.filterId.replace(/-/g, ' ').replace(/\b\w/g, function(c){return c.toUpperCase();});
+                    btn.textContent = 'Continue: DSA — ' + filterLabel + ' →';
+                } else {
+                    btn.textContent = 'Continue: DSA (' + catLabel + ') →';
+                }
             } else {
                 btn.textContent = 'Continue Progress →';
             }
@@ -303,7 +308,7 @@
                             dsaView.classList.add('active');
                             dsaView.style.display = 'block';
                             if (pos.context.filterId) {
-                                DSARenderer.renderFilteredView(pos.context.filterId);
+                                DSARenderer.renderFilteredView(pos.context.filterId, pos.context.catId, pos.context.questionId);
                             } else {
                                 DSARenderer.renderQuestionList(pos.context.catId, pos.context.questionId);
                             }

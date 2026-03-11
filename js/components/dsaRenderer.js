@@ -91,6 +91,34 @@
         return def.label;
     }
 
+    // Count all incomplete questions (no completed filter)
+    function countIncompleteQuestions() {
+        var data = getData();
+        var count = 0;
+        CATEGORY_ORDER.forEach(function (catKey) {
+            var cat = data[catKey];
+            if (!cat) return;
+            cat.questions.forEach(function (q) {
+                if (!window.DSAStore.hasFilter(catKey, q.id, 'completed')) count++;
+            });
+            var customQs = window.DSAStore.getCustomQuestions(catKey);
+            customQs.forEach(function (cq) {
+                if (!window.DSAStore.hasFilter(catKey, cq.id, 'completed')) count++;
+            });
+        });
+        return count;
+    }
+
+    // Count all custom questions across categories
+    function countAllCustomQuestions() {
+        var allCustom = window.DSAStore.getAllCustomQuestions();
+        var count = 0;
+        Object.keys(allCustom).forEach(function (catId) {
+            count += allCustom[catId].length;
+        });
+        return count;
+    }
+
     // ========== SIDEBAR DOT — color based on QUESTION DIFFICULTY ==========
     function buildSidebarDot(difficulty, catId, questionId) {
         var filters = window.DSAStore.getFilter(catId, questionId);
@@ -165,6 +193,22 @@
             if (count > 0) h += '<span class="fp-count">' + count + '</span>';
             h += '</button>';
         });
+        // Vertical divider
+        h += '<span class="dsa-filter-divider"></span>';
+        // Incomplete virtual filter
+        var incompleteCount = countIncompleteQuestions();
+        h += '<button class="dsa-filter-pill" data-virtual-filter="incomplete" style="--filter-color:#71717a">';
+        h += '<span class="fp-icon">○</span>';
+        h += '<span class="fp-label">Incomplete</span>';
+        if (incompleteCount > 0) h += '<span class="fp-count" style="background:#71717a">' + incompleteCount + '</span>';
+        h += '</button>';
+        // Custom Questions virtual filter
+        var allCustomCount = countAllCustomQuestions();
+        h += '<button class="dsa-filter-pill" data-virtual-filter="custom-questions" style="--filter-color:#facc15">';
+        h += '<span class="fp-icon">★</span>';
+        h += '<span class="fp-label">Custom Questions</span>';
+        if (allCustomCount > 0) h += '<span class="fp-count" style="background:#facc15">' + allCustomCount + '</span>';
+        h += '</button>';
         h += '</div>';
         h += '</div>';
 
@@ -174,7 +218,21 @@
             // Include custom questions in count
             var customQs = window.DSAStore.getCustomQuestions(cat.id);
             var totalCount = cat.questions.length + customQs.length;
+            // Module progress tracking
+            var completedInModule = 0;
+            cat.questions.forEach(function (q) {
+                if (window.DSAStore.hasFilter(cat.id, q.id, 'completed')) completedInModule++;
+            });
+            customQs.forEach(function (cq) {
+                if (window.DSAStore.hasFilter(cat.id, cq.id, 'completed')) completedInModule++;
+            });
             h += '<div class="dsa-category-card anim-card" data-cat-id="' + cat.id + '" style="--cat-color:' + cat.color + '">';
+            // Progress indicator top-right
+            if (completedInModule > 0 && completedInModule < totalCount) {
+                h += '<div class="cat-progress">Completed: ' + completedInModule + '/' + totalCount + '</div>';
+            } else if (completedInModule > 0 && completedInModule >= totalCount) {
+                h += '<div class="cat-progress cat-progress-done">(completed)</div>';
+            }
             h += '<div class="cat-icon">' + cat.icon + '</div>';
             h += '<div class="cat-name">' + cat.name + '</div>';
             h += '<div class="cat-count">' + totalCount + ' Problems' + (customQs.length ? ' <span class="cat-custom-badge">+' + customQs.length + ' custom</span>' : '') + '</div>';
@@ -205,9 +263,18 @@
         });
 
         // Filter pill clicks → open filtered view
-        dsaView.querySelectorAll('.dsa-filter-pill').forEach(function (btn) {
+        dsaView.querySelectorAll('.dsa-filter-pill[data-filter-id]').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 renderFilteredView(btn.dataset.filterId);
+            });
+        });
+
+        // Virtual filter pill clicks
+        dsaView.querySelectorAll('.dsa-filter-pill[data-virtual-filter]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var vf = btn.dataset.virtualFilter;
+                if (vf === 'incomplete') renderIncompleteView();
+                else if (vf === 'custom-questions') renderCustomQuestionsView();
             });
         });
 
@@ -289,8 +356,10 @@
                 h += '<span class="qs-custom-tag" style="color:' + diffColors[cq.difficulty] + '">★</span>';
                 h += buildSidebarDot(cq.difficulty, catId, cq.id);
                 h += '<span class="qs-item-title">' + escapeHtml(cq.title) + '</span>';
+                h += '<span class="qs-custom-icons">';
                 h += '<span class="qs-edit-icon" data-edit-q="' + cq.id + '" title="Edit"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>';
                 h += '<span class="qs-trash-icon" data-del-q="' + cq.id + '" title="Delete"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></span>';
+                h += '</span>';
                 h += '</div>';
             });
             h += '</div>';
@@ -423,12 +492,16 @@
         // Save position for continue progress feature
         window.DSAStore.savePosition('dsa', { catId: catId, questionId: questionId });
 
-        var prevQ = null;
-        var nextQ = null;
-        if (!isCustomQuestion) {
-            prevQ = qIndex > 0 ? cat.questions[qIndex - 1] : null;
-            nextQ = qIndex < cat.questions.length - 1 ? cat.questions[qIndex + 1] : null;
+        // Build combined list for navigation (built-in + custom)
+        var allNavQuestions = cat.questions.slice();
+        var navCustomQs = window.DSAStore.getCustomQuestions(catId);
+        navCustomQs.forEach(function (cq) { allNavQuestions.push(cq); });
+        var navIdx = -1;
+        for (var ni = 0; ni < allNavQuestions.length; ni++) {
+            if (allNavQuestions[ni].id === questionId) { navIdx = ni; break; }
         }
+        var prevQ = navIdx > 0 ? allNavQuestions[navIdx - 1] : null;
+        var nextQ = navIdx < allNavQuestions.length - 1 ? allNavQuestions[navIdx + 1] : null;
 
         var h = '';
 
@@ -442,18 +515,16 @@
         h += '</div>';
 
         // Prev / Next nav
-        if (!isCustomQuestion) {
-            h += '<div class="q-nav">';
-            h += '<button class="q-nav-btn" id="q-prev"' + (prevQ ? '' : ' disabled') + '>';
-            h += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>';
-            h += 'Prev';
-            h += '</button>';
-            h += '<button class="q-nav-btn" id="q-next"' + (nextQ ? '' : ' disabled') + '>';
-            h += 'Next';
-            h += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
-            h += '</button>';
-            h += '</div>';
-        }
+        h += '<div class="q-nav">';
+        h += '<button class="q-nav-btn" id="q-prev"' + (prevQ ? '' : ' disabled') + '>';
+        h += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>';
+        h += 'Prev';
+        h += '</button>';
+        h += '<button class="q-nav-btn" id="q-next"' + (nextQ ? '' : ' disabled') + '>';
+        h += 'Next';
+        h += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
+        h += '</button>';
+        h += '</div>';
 
         // ===== MULTI-FILTER BUTTONS =====
         var currentFilters = window.DSAStore.getFilter(catId, questionId) || [];
@@ -752,8 +823,8 @@
 
         // Complexity badges
         h += '<div class="approach-complexity">';
-        h += '<div class="complexity-badge"><span class="cb-label">Time</span> ' + escapeHtml(app.timeComplexity) + '</div>';
-        h += '<div class="complexity-badge"><span class="cb-label">Space</span> ' + escapeHtml(app.spaceComplexity) + '</div>';
+        h += '<div class="complexity-badge"><span class="cb-label">Time</span> ' + (app.timeComplexity || '') + '</div>';
+        h += '<div class="complexity-badge"><span class="cb-label">Space</span> ' + (app.spaceComplexity || '') + '</div>';
         h += '</div>';
 
         // Approach description (brief summary)
@@ -803,7 +874,7 @@
     }
 
     // ========== FILTERED VIEW (full question view with sidebar) ==========
-    function renderFilteredView(filterId) {
+    function renderFilteredView(filterId, startCatId, startQuestionId) {
         var def = getFilterDef(filterId);
         if (!def) return;
 
@@ -844,6 +915,16 @@
         });
 
         var firstEntry = flatList[0];
+        var startIdx = 0;
+        if (startCatId && startQuestionId) {
+            for (var si = 0; si < flatList.length; si++) {
+                if (flatList[si].catId === startCatId && flatList[si].questionId === startQuestionId) {
+                    firstEntry = flatList[si];
+                    startIdx = si;
+                    break;
+                }
+            }
+        }
 
         var h = '<div class="dsa-question-view">';
 
@@ -882,8 +963,14 @@
                     if (cq.id === entry.questionId) qDiff = cq.difficulty;
                 });
                 var dotColor = { easy: '#22c55e', medium: '#eab308', hard: '#ef4444' }[qDiff] || '#525252';
+                var isCustomEntry = findQuestion(entry.catId, entry.questionId);
+                var entryIsCustom = isCustomEntry && isCustomEntry.isCustom;
                 h += '<div class="qs-item' + active + '" data-fv-cat-id="' + entry.catId + '" data-fv-q-id="' + entry.questionId + '">';
-                h += '<span class="fv-dot" style="background:' + dotColor + '"></span>';
+                if (entryIsCustom) {
+                    h += '<span class="qs-custom-tag" style="color:' + dotColor + '">★</span>';
+                } else {
+                    h += '<span class="fv-dot" style="background:' + dotColor + '"></span>';
+                }
                 h += '<span class="qs-item-title">' + escapeHtml(findQuestionTitle(entry.catId, entry.questionId)) + '</span>';
                 if (entry.level) {
                     var lvColor = getFilterColor(filterId, entry.level);
@@ -918,7 +1005,7 @@
         dsaView.innerHTML = h;
 
         // Render first question detail using the filtered detail renderer
-        renderFilteredQuestionDetail(filterId, firstEntry.catId, firstEntry.questionId, flatList, 0);
+        renderFilteredQuestionDetail(filterId, firstEntry.catId, firstEntry.questionId, flatList, startIdx);
 
         // Sidebar item clicks
         dsaView.querySelectorAll('.qs-item[data-fv-q-id]').forEach(function (el) {
@@ -1128,6 +1215,11 @@
                 var isActive = window.DSAStore.hasFilter(catId, questionId, fid);
                 if (isActive) {
                     window.DSAStore.removeFilter(catId, questionId, fid);
+                    // If removing the filter we're viewing, re-render the filtered view
+                    if (fid === filterId) {
+                        renderFilteredView(filterId);
+                        return;
+                    }
                 } else {
                     var fdef = getFilterDef(fid);
                     var defLevel = (fdef && fdef.levels && fdef.levels.length > 0) ? fdef.levels[0].id : null;
@@ -1400,12 +1492,12 @@
     function formatComplexity(str) {
         if (!str) return str;
         // Handle n^(expr) — parenthesized exponent
-        str = str.replace(/\^?\(([^)]+)\)/g, function (match, inner) {
-            if (match.charAt(0) === '^') return '<sup>' + inner + '</sup>';
-            return match;
+        str = str.replace(/\^\(([^)]+)\)/g, function (match, inner) {
+            return '<sup>' + inner.trim() + '</sup>';
         });
+        // Handle n^x — single token exponent
         str = str.replace(/\^([^\s<()+*/]+)/g, function (match, exp) {
-            return '<sup>' + exp + '</sup>';
+            return '<sup>' + exp.trim() + '</sup>';
         });
         return str;
     }
@@ -1625,6 +1717,385 @@
             overlay.remove();
             renderQuestionList(catId, questionId);
         });
+    }
+
+    // ========== INCOMPLETE VIEW (virtual filter) ==========
+    function renderIncompleteView() {
+        var dsaView = document.getElementById('dsa-view');
+        var data = getData();
+        var diffOrder = ['easy', 'medium', 'hard'];
+
+        // Gather all incomplete questions grouped by category
+        var byCat = {};
+        var totalCount = 0;
+        CATEGORY_ORDER.forEach(function (catKey) {
+            var cat = data[catKey];
+            if (!cat) return;
+            var items = [];
+            cat.questions.forEach(function (q) {
+                if (!window.DSAStore.hasFilter(catKey, q.id, 'completed')) {
+                    items.push({ catId: catKey, questionId: q.id, q: q, isCustom: false });
+                }
+            });
+            var customQs = window.DSAStore.getCustomQuestions(catKey);
+            customQs.forEach(function (cq) {
+                if (!window.DSAStore.hasFilter(catKey, cq.id, 'completed')) {
+                    items.push({ catId: catKey, questionId: cq.id, q: cq, isCustom: true });
+                }
+            });
+            if (items.length > 0) {
+                // Sort by difficulty within category
+                items.sort(function (a, b) {
+                    var order = { easy: 0, medium: 1, hard: 2 };
+                    return (order[a.q.difficulty] || 0) - (order[b.q.difficulty] || 0);
+                });
+                byCat[catKey] = items;
+                totalCount += items.length;
+            }
+        });
+
+        if (totalCount === 0) {
+            var emptyH = '<div class="dsa-filtered-view">';
+            emptyH += '<div class="fv-header">';
+            emptyH += '<button class="fv-back" id="fv-back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg> Back</button>';
+            emptyH += '<div class="fv-title" style="color:#71717a">○ Incomplete</div>';
+            emptyH += '<div class="fv-count">0 questions</div>';
+            emptyH += '</div>';
+            emptyH += '<div class="fv-empty">All questions are completed! 🎉</div>';
+            emptyH += '</div>';
+            dsaView.innerHTML = emptyH;
+            document.getElementById('fv-back').addEventListener('click', function () { renderCategoryGrid(); });
+            return;
+        }
+
+        // Build flat list for navigation
+        var flatList = [];
+        CATEGORY_ORDER.forEach(function (catKey) {
+            if (!byCat[catKey]) return;
+            byCat[catKey].forEach(function (entry) { flatList.push(entry); });
+        });
+
+        var firstEntry = flatList[0];
+        var h = '<div class="dsa-question-view">';
+
+        // Sidebar
+        h += '<div class="dsa-question-sidebar floating" style="--cat-color:#71717a">';
+        h += '<div class="qs-header">';
+        h += '<button class="qs-back" id="fv-back-grid"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg> All Categories</button>';
+        h += '<div class="qs-cat-name" style="color:#71717a">○ Incomplete</div>';
+        h += '<div class="qs-cat-count">' + totalCount + ' question' + (totalCount !== 1 ? 's' : '') + '</div>';
+        h += '</div>';
+        h += '<div class="qs-list">';
+
+        CATEGORY_ORDER.forEach(function (catKey) {
+            if (!byCat[catKey]) return;
+            var catName = CAT_NAMES[catKey] || catKey;
+            var catItems = byCat[catKey];
+            h += '<div class="diff-group fv-sidebar-group">';
+            h += '<div class="diff-group-label fv-cat-toggle" data-fv-cat="' + catKey + '">' + catName + ' (' + catItems.length + ') <span class="fv-toggle-arrow">▾</span></div>';
+            h += '<div class="fv-cat-items-wrap" data-fv-cat-body="' + catKey + '">';
+            catItems.forEach(function (entry) {
+                var active = (entry.catId === firstEntry.catId && entry.questionId === firstEntry.questionId) ? ' active' : '';
+                var dotColor = { easy: '#22c55e', medium: '#eab308', hard: '#ef4444' }[entry.q.difficulty] || '#525252';
+                h += '<div class="qs-item' + active + '" data-fv-cat-id="' + entry.catId + '" data-fv-q-id="' + entry.questionId + '">';
+                h += '<span class="fv-dot" style="background:' + dotColor + '"></span>';
+                h += '<span class="qs-item-title">' + escapeHtml(entry.q.title) + '</span>';
+                if (entry.isCustom) h += '<span class="q-custom-label" style="font-size:10px;margin-left:auto">★</span>';
+                h += '</div>';
+            });
+            h += '</div></div>';
+        });
+
+        h += '</div></div>';
+
+        // Detail area
+        h += '<div class="dsa-question-detail" id="dsa-fv-detail"></div>';
+
+        // Breadcrumb
+        h += '<div class="dsa-topnav"><div class="dsa-breadcrumb">';
+        h += '<span class="bc-link" id="fv-bc-dsa">DSA</span><span class="bc-sep">›</span>';
+        h += '<span class="bc-link" id="fv-bc-filter" style="color:#71717a">Incomplete</span><span class="bc-sep">›</span>';
+        h += '<span class="bc-current" id="fv-bc-question"></span>';
+        h += '</div></div></div>';
+
+        dsaView.innerHTML = h;
+
+        renderVirtualFilterDetail(firstEntry.catId, firstEntry.questionId, flatList, 0, 'incomplete');
+
+        // Sidebar clicks
+        dsaView.querySelectorAll('.qs-item[data-fv-q-id]').forEach(function (el) {
+            el.addEventListener('click', function () {
+                var ci = el.dataset.fvCatId, qi = el.dataset.fvQId;
+                var idx = 0;
+                for (var fi = 0; fi < flatList.length; fi++) {
+                    if (flatList[fi].catId === ci && flatList[fi].questionId === qi) { idx = fi; break; }
+                }
+                renderVirtualFilterDetail(ci, qi, flatList, idx, 'incomplete');
+                dsaView.querySelectorAll('.qs-item[data-fv-q-id]').forEach(function (item) {
+                    item.classList.toggle('active', item.dataset.fvCatId === ci && item.dataset.fvQId === qi);
+                });
+            });
+        });
+
+        // Collapsible headings
+        dsaView.querySelectorAll('.fv-cat-toggle').forEach(function (toggle) {
+            toggle.addEventListener('click', function () {
+                var body = dsaView.querySelector('[data-fv-cat-body="' + toggle.dataset.fvCat + '"]');
+                if (body) { var h = body.style.display === 'none'; body.style.display = h ? '' : 'none'; toggle.querySelector('.fv-toggle-arrow').textContent = h ? '▾' : '▸'; }
+            });
+        });
+
+        document.getElementById('fv-back-grid').addEventListener('click', function () { renderCategoryGrid(); });
+        document.getElementById('fv-bc-dsa').addEventListener('click', function () { renderCategoryGrid(); });
+        document.getElementById('fv-bc-filter').addEventListener('click', function () { renderCategoryGrid(); });
+    }
+
+    // ========== CUSTOM QUESTIONS VIEW (virtual filter) ==========
+    function renderCustomQuestionsView() {
+        var dsaView = document.getElementById('dsa-view');
+        var data = getData();
+        var allCustom = window.DSAStore.getAllCustomQuestions();
+
+        var byCat = {};
+        var totalCount = 0;
+        CATEGORY_ORDER.forEach(function (catKey) {
+            var customQs = allCustom[catKey];
+            if (!customQs || customQs.length === 0) return;
+            var items = customQs.map(function (cq) { return { catId: catKey, questionId: cq.id, q: cq, isCustom: true }; });
+            items.sort(function (a, b) {
+                var order = { easy: 0, medium: 1, hard: 2 };
+                return (order[a.q.difficulty] || 0) - (order[b.q.difficulty] || 0);
+            });
+            byCat[catKey] = items;
+            totalCount += customQs.length;
+        });
+
+        if (totalCount === 0) {
+            var emptyH = '<div class="dsa-filtered-view">';
+            emptyH += '<div class="fv-header">';
+            emptyH += '<button class="fv-back" id="fv-back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg> Back</button>';
+            emptyH += '<div class="fv-title" style="color:#facc15">★ Custom Questions</div>';
+            emptyH += '<div class="fv-count">0 questions</div>';
+            emptyH += '</div>';
+            emptyH += '<div class="fv-empty">No custom questions added yet.</div>';
+            emptyH += '</div>';
+            dsaView.innerHTML = emptyH;
+            document.getElementById('fv-back').addEventListener('click', function () { renderCategoryGrid(); });
+            return;
+        }
+
+        var flatList = [];
+        CATEGORY_ORDER.forEach(function (catKey) {
+            if (!byCat[catKey]) return;
+            byCat[catKey].forEach(function (entry) { flatList.push(entry); });
+        });
+
+        var firstEntry = flatList[0];
+        var h = '<div class="dsa-question-view">';
+
+        h += '<div class="dsa-question-sidebar floating" style="--cat-color:#facc15">';
+        h += '<div class="qs-header">';
+        h += '<button class="qs-back" id="fv-back-grid"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg> All Categories</button>';
+        h += '<div class="qs-cat-name" style="color:#facc15">★ Custom Questions</div>';
+        h += '<div class="qs-cat-count">' + totalCount + ' question' + (totalCount !== 1 ? 's' : '') + '</div>';
+        h += '</div>';
+        h += '<div class="qs-list">';
+
+        CATEGORY_ORDER.forEach(function (catKey) {
+            if (!byCat[catKey]) return;
+            var catName = CAT_NAMES[catKey] || catKey;
+            var catItems = byCat[catKey];
+            h += '<div class="diff-group fv-sidebar-group">';
+            h += '<div class="diff-group-label fv-cat-toggle" data-fv-cat="' + catKey + '">' + catName + ' (' + catItems.length + ') <span class="fv-toggle-arrow">▾</span></div>';
+            h += '<div class="fv-cat-items-wrap" data-fv-cat-body="' + catKey + '">';
+            catItems.forEach(function (entry) {
+                var active = (entry.catId === firstEntry.catId && entry.questionId === firstEntry.questionId) ? ' active' : '';
+                var dotColor = { easy: '#22c55e', medium: '#eab308', hard: '#ef4444' }[entry.q.difficulty] || '#525252';
+                h += '<div class="qs-item' + active + '" data-fv-cat-id="' + entry.catId + '" data-fv-q-id="' + entry.questionId + '">';
+                h += '<span class="qs-custom-tag" style="color:' + dotColor + '">★</span>';
+                h += '<span class="qs-item-title">' + escapeHtml(entry.q.title) + '</span>';
+                h += '</div>';
+            });
+            h += '</div></div>';
+        });
+
+        h += '</div></div>';
+
+        h += '<div class="dsa-question-detail" id="dsa-fv-detail"></div>';
+
+        h += '<div class="dsa-topnav"><div class="dsa-breadcrumb">';
+        h += '<span class="bc-link" id="fv-bc-dsa">DSA</span><span class="bc-sep">›</span>';
+        h += '<span class="bc-link" id="fv-bc-filter" style="color:#facc15">Custom Questions</span><span class="bc-sep">›</span>';
+        h += '<span class="bc-current" id="fv-bc-question"></span>';
+        h += '</div></div></div>';
+
+        dsaView.innerHTML = h;
+
+        renderVirtualFilterDetail(firstEntry.catId, firstEntry.questionId, flatList, 0, 'custom-questions');
+
+        dsaView.querySelectorAll('.qs-item[data-fv-q-id]').forEach(function (el) {
+            el.addEventListener('click', function () {
+                var ci = el.dataset.fvCatId, qi = el.dataset.fvQId;
+                var idx = 0;
+                for (var fi = 0; fi < flatList.length; fi++) {
+                    if (flatList[fi].catId === ci && flatList[fi].questionId === qi) { idx = fi; break; }
+                }
+                renderVirtualFilterDetail(ci, qi, flatList, idx, 'custom-questions');
+                dsaView.querySelectorAll('.qs-item[data-fv-q-id]').forEach(function (item) {
+                    item.classList.toggle('active', item.dataset.fvCatId === ci && item.dataset.fvQId === qi);
+                });
+            });
+        });
+
+        dsaView.querySelectorAll('.fv-cat-toggle').forEach(function (toggle) {
+            toggle.addEventListener('click', function () {
+                var body = dsaView.querySelector('[data-fv-cat-body="' + toggle.dataset.fvCat + '"]');
+                if (body) { var h = body.style.display === 'none'; body.style.display = h ? '' : 'none'; toggle.querySelector('.fv-toggle-arrow').textContent = h ? '▾' : '▸'; }
+            });
+        });
+
+        document.getElementById('fv-back-grid').addEventListener('click', function () { renderCategoryGrid(); });
+        document.getElementById('fv-bc-dsa').addEventListener('click', function () { renderCategoryGrid(); });
+        document.getElementById('fv-bc-filter').addEventListener('click', function () { renderCategoryGrid(); });
+    }
+
+    // ========== VIRTUAL FILTER DETAIL RENDERER ==========
+    function renderVirtualFilterDetail(catId, questionId, flatList, currentIdx, viewType) {
+        var result = findQuestion(catId, questionId);
+        if (!result) return;
+        var question = result.q;
+        var isCustomQuestion = result.isCustom;
+
+        var detail = document.getElementById('dsa-fv-detail');
+        if (!detail) return;
+
+        var bcQ = document.getElementById('fv-bc-question');
+        if (bcQ) bcQ.textContent = question.title;
+
+        var prevEntry = currentIdx > 0 ? flatList[currentIdx - 1] : null;
+        var nextEntry = currentIdx < flatList.length - 1 ? flatList[currentIdx + 1] : null;
+
+        var h = '';
+        h += '<div class="q-title-row">';
+        h += '<h1 class="q-title">' + escapeHtml(question.title) + '</h1>';
+        h += '<span class="diff-badge ' + question.difficulty + '">' + question.difficulty + '</span>';
+        if (isCustomQuestion) h += '<span class="q-custom-label">★ Custom</span>';
+        h += '</div>';
+
+        h += '<div class="q-nav">';
+        h += '<button class="q-nav-btn fv-prev"' + (prevEntry ? '' : ' disabled') + '><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg> Prev</button>';
+        h += '<button class="q-nav-btn fv-next"' + (nextEntry ? '' : ' disabled') + '>Next <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>';
+        h += '</div>';
+
+        // Filter buttons
+        h += '<div class="q-filter-bar"><span class="q-filter-label">Mark as:</span>';
+        window.DSAStore.FILTER_DEFS.forEach(function (def) {
+            var isActive = window.DSAStore.hasFilter(catId, questionId, def.id);
+            var entry = isActive ? window.DSAStore.getFilterEntry(catId, questionId, def.id) : null;
+            var bracketLabel = '';
+            if (isActive && entry && entry.level && def.levels) {
+                for (var li = 0; li < def.levels.length; li++) {
+                    if (def.levels[li].id === entry.level) { bracketLabel = ' (' + def.levels[li].label + ')'; break; }
+                }
+            }
+            h += '<button class="q-filter-btn' + (isActive ? ' active' : '') + '" data-filter-id="' + def.id + '" style="--filter-color:' + def.color + '">';
+            h += '<span class="qfb-icon">' + def.icon + '</span><span class="qfb-label">' + def.label + bracketLabel + '</span></button>';
+        });
+        h += '</div>';
+
+        if (question.description) {
+            h += '<div class="q-description"><div class="q-description-title">Problem Description</div>';
+            h += '<div class="q-description-body">' + question.description + '</div></div>';
+        }
+
+        if (question.testCases && question.testCases.length > 0) {
+            h += '<div class="q-test-cases"><div class="q-test-cases-title">Test Cases</div>';
+            question.testCases.forEach(function (tc, idx) {
+                h += '<div class="q-test-case"><div class="tc-header">Case ' + (idx + 1) + '</div>';
+                h += '<div class="tc-row"><span class="tc-label">Input:</span> <code>' + escapeHtml(tc.input) + '</code></div>';
+                h += '<div class="tc-row"><span class="tc-label">Output:</span> <code>' + escapeHtml(tc.output) + '</code></div>';
+                if (tc.explanation) h += '<div class="tc-row"><span class="tc-label">Explanation:</span> ' + escapeHtml(tc.explanation) + '</div>';
+                h += '</div>';
+            });
+            h += '</div>';
+        }
+
+        if (question.approaches && question.approaches.length > 1) {
+            h += '<div class="approach-tabs" id="fv-approach-tabs">';
+            question.approaches.forEach(function (app, i) {
+                h += '<div class="approach-tab' + (i === 0 ? ' active' : '') + '" data-approach="' + i + '">' + app.name + '</div>';
+            });
+            h += '</div>';
+        }
+        if (question.approaches && question.approaches.length > 0) {
+            h += '<div id="approach-content"></div>';
+        }
+
+        var note = window.DSAStore.getNote(catId, questionId);
+        var noteTitle = (note && note.title) ? escapeHtml(note.title) : '';
+        var noteContent = (note && note.content) ? escapeHtml(note.content) : '';
+        h += '<div class="q-notes-section">';
+        h += '<input type="text" class="q-notes-title" id="q-notes-title" value="' + noteTitle + '" placeholder="Add Your Custom Notes">';
+        h += '<textarea class="q-notes-textarea" id="q-notes-content" placeholder="Write your notes here...">' + noteContent + '</textarea>';
+        h += '</div>';
+
+        detail.innerHTML = h;
+
+        if (question.approaches && question.approaches.length > 0) renderApproach(question, 0);
+
+        detail.querySelectorAll('.approach-tab').forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                var idx = parseInt(tab.dataset.approach);
+                detail.querySelectorAll('.approach-tab').forEach(function (t) { t.classList.toggle('active', parseInt(t.dataset.approach) === idx); });
+                renderApproach(question, idx);
+            });
+        });
+
+        var prevBtn = detail.querySelector('.fv-prev');
+        var nextBtn = detail.querySelector('.fv-next');
+        if (prevEntry && prevBtn) {
+            prevBtn.addEventListener('click', function () {
+                renderVirtualFilterDetail(prevEntry.catId, prevEntry.questionId, flatList, currentIdx - 1, viewType);
+                updateFilteredSidebarActive(prevEntry.catId, prevEntry.questionId);
+            });
+        }
+        if (nextEntry && nextBtn) {
+            nextBtn.addEventListener('click', function () {
+                renderVirtualFilterDetail(nextEntry.catId, nextEntry.questionId, flatList, currentIdx + 1, viewType);
+                updateFilteredSidebarActive(nextEntry.catId, nextEntry.questionId);
+            });
+        }
+
+        detail.querySelectorAll('.q-filter-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var fid = btn.dataset.filterId;
+                var isActive = window.DSAStore.hasFilter(catId, questionId, fid);
+                if (isActive) {
+                    window.DSAStore.removeFilter(catId, questionId, fid);
+                } else {
+                    var fdef = getFilterDef(fid);
+                    var defLevel = (fdef && fdef.levels && fdef.levels.length > 0) ? fdef.levels[0].id : null;
+                    window.DSAStore.addFilter(catId, questionId, fid, defLevel);
+                    if (fdef && fdef.levels && fdef.levels.length > 0) {
+                        showLevelSelector(catId, questionId, fid, fdef, detail, isCustomQuestion);
+                        updateFilterButtonLabels(catId, questionId, detail);
+                        return;
+                    }
+                }
+                updateFilterButtonLabels(catId, questionId, detail);
+            });
+        });
+
+        var notesArea = document.getElementById('q-notes-content');
+        if (notesArea) {
+            function autoResizeVf() { notesArea.style.height = 'auto'; notesArea.style.height = notesArea.scrollHeight + 'px'; }
+            notesArea.addEventListener('input', function () { autoResizeVf(); saveNotesDebounced(catId, questionId); });
+            autoResizeVf();
+        }
+        var notesTitle = document.getElementById('q-notes-title');
+        if (notesTitle) { notesTitle.addEventListener('input', function () { saveNotesDebounced(catId, questionId); }); }
+
+        detail.scrollTop = 0;
     }
 
     function animateCards() {

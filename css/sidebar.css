@@ -8,24 +8,27 @@
 .sidebar-back-btn {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    padding: 10px 14px;
-    margin: 8px 8px 4px;
+    padding: 10px 16px;
+    margin: 10px 10px 6px;
     border-radius: 10px;
-    background: transparent;
-    border: 1px solid transparent;
-    color: #525252;
+    background: #0a0a0a;
+    border: 1px solid #1e1e1e;
+    color: #737373;
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.25s ease;
     font-family: 'Google Sans', 'DM Sans', sans-serif;
+    width: calc(100% - 20px);
+    box-sizing: border-box;
 }
 
 .sidebar-back-btn:hover {
     background: #141414;
-    border-color: #1e1e1e;
-    color: #a3a3a3;
+    border-color: #333;
+    color: #d4d4d8;
 }
 
 #sidebar {
