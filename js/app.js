@@ -257,6 +257,9 @@
                 if (pos.context.filterId) {
                     var filterLabel = pos.context.filterId.replace(/-/g, ' ').replace(/\b\w/g, function(c){return c.toUpperCase();});
                     btn.textContent = 'Continue: DSA — ' + filterLabel + ' →';
+                } else if (pos.context.virtualFilter) {
+                    var vfLabel = pos.context.virtualFilter.replace(/-/g, ' ').replace(/\b\w/g, function(c){return c.toUpperCase();});
+                    btn.textContent = 'Continue: DSA — ' + vfLabel + ' →';
                 } else {
                     btn.textContent = 'Continue: DSA (' + catLabel + ') →';
                 }
@@ -302,12 +305,18 @@
                     onComplete: function () {
                         overlay.classList.add('hidden');
 
-                        if (pos.view === 'dsa' && pos.context.catId) {
+                        if (pos.view === 'dsa' && (pos.context.catId || pos.context.virtualFilter)) {
                             currentView = 'dsa-question';
                             var dsaView = document.getElementById('dsa-view');
                             dsaView.classList.add('active');
                             dsaView.style.display = 'block';
-                            if (pos.context.filterId) {
+                            if (pos.context.virtualFilter) {
+                                if (pos.context.virtualFilter === 'incomplete') {
+                                    DSARenderer.renderIncompleteView();
+                                } else if (pos.context.virtualFilter === 'custom-questions') {
+                                    DSARenderer.renderCustomQuestionsView();
+                                }
+                            } else if (pos.context.filterId) {
                                 DSARenderer.renderFilteredView(pos.context.filterId, pos.context.catId, pos.context.questionId);
                             } else {
                                 DSARenderer.renderQuestionList(pos.context.catId, pos.context.questionId);

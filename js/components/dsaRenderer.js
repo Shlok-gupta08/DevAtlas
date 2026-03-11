@@ -823,8 +823,8 @@
 
         // Complexity badges
         h += '<div class="approach-complexity">';
-        h += '<div class="complexity-badge"><span class="cb-label">Time</span> ' + (app.timeComplexity || '') + '</div>';
-        h += '<div class="complexity-badge"><span class="cb-label">Space</span> ' + (app.spaceComplexity || '') + '</div>';
+        h += '<div class="complexity-badge"><span class="cb-label">Time</span> ' + formatComplexity(app.timeComplexity || '') + '</div>';
+        h += '<div class="complexity-badge"><span class="cb-label">Space</span> ' + formatComplexity(app.spaceComplexity || '') + '</div>';
         h += '</div>';
 
         // Approach description (brief summary)
@@ -1454,7 +1454,7 @@
     }
 
     // ========== DELETE CONFIRM DIALOG ==========
-    function renderDeleteConfirmDialog(catId, questionId) {
+    function renderDeleteConfirmDialog(catId, questionId, onDeleteCallback) {
         var existing = document.getElementById('delete-q-overlay');
         if (existing) existing.remove();
 
@@ -1483,7 +1483,7 @@
         document.getElementById('dq-confirm').addEventListener('click', function () {
             window.DSAStore.deleteCustomQuestion(catId, questionId);
             overlay.remove();
-            renderQuestionList(catId);
+            if (onDeleteCallback) { onDeleteCallback(); } else { renderQuestionList(catId); }
         });
     }
 
@@ -1491,6 +1491,8 @@
     // Converts n^2 → n<sup>2</sup>, n^(log n) → n<sup>log n</sup>
     function formatComplexity(str) {
         if (!str) return str;
+        // Normalize whitespace around ^ so no stray spaces end up near <sup>
+        str = str.replace(/\s*\^\s*/g, '^');
         // Handle n^(expr) — parenthesized exponent
         str = str.replace(/\^\(([^)]+)\)/g, function (match, inner) {
             return '<sup>' + inner.trim() + '</sup>';
@@ -1499,6 +1501,9 @@
         str = str.replace(/\^([^\s<()+*/]+)/g, function (match, exp) {
             return '<sup>' + exp.trim() + '</sup>';
         });
+        // Clean stray whitespace around existing <sup> tags (already-formatted values)
+        str = str.replace(/\s*<sup>/g, '<sup>');
+        str = str.replace(/<\/sup>\s*/g, '</sup>');
         return str;
     }
 
@@ -1966,6 +1971,9 @@
         var question = result.q;
         var isCustomQuestion = result.isCustom;
 
+        // Save position for continuation tracking
+        window.DSAStore.savePosition('dsa', { catId: catId, questionId: questionId, virtualFilter: viewType });
+
         var detail = document.getElementById('dsa-fv-detail');
         if (!detail) return;
 
@@ -2002,6 +2010,14 @@
             h += '<span class="qfb-icon">' + def.icon + '</span><span class="qfb-label">' + def.label + bracketLabel + '</span></button>';
         });
         h += '</div>';
+
+        // Edit + Delete buttons for custom questions in Custom Questions view
+        if (viewType === 'custom-questions' && isCustomQuestion) {
+            h += '<div class="q-custom-actions">';
+            h += '<button class="q-delete-custom" id="vf-delete-custom"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Delete Question</button>';
+            h += '<button class="q-edit-custom" id="vf-edit-custom"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit Question Details</button>';
+            h += '</div>';
+        }
 
         if (question.description) {
             h += '<div class="q-description"><div class="q-description-title">Problem Description</div>';
@@ -2095,6 +2111,18 @@
         var notesTitle = document.getElementById('q-notes-title');
         if (notesTitle) { notesTitle.addEventListener('input', function () { saveNotesDebounced(catId, questionId); }); }
 
+        // Edit/Delete listeners for custom questions in Custom Questions view
+        if (viewType === 'custom-questions' && isCustomQuestion) {
+            var delBtn = document.getElementById('vf-delete-custom');
+            var editBtn = document.getElementById('vf-edit-custom');
+            if (delBtn) delBtn.addEventListener('click', function () {
+                renderDeleteConfirmDialog(catId, questionId, function () { renderCustomQuestionsView(); });
+            });
+            if (editBtn) editBtn.addEventListener('click', function () {
+                renderEditQuestionDialog(catId, questionId);
+            });
+        }
+
         detail.scrollTop = 0;
     }
 
@@ -2120,6 +2148,8 @@
         renderCategoryGrid: renderCategoryGrid,
         renderQuestionList: renderQuestionList,
         renderFilteredView: renderFilteredView,
+        renderIncompleteView: renderIncompleteView,
+        renderCustomQuestionsView: renderCustomQuestionsView,
         getCurrentCategory: function () { return currentCategory; },
         getCurrentQuestion: function () { return currentQuestion; }
     };

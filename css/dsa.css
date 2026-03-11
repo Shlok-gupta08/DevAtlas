@@ -2034,9 +2034,11 @@
 
 /* ========== SUP TIGHTEN ========== */
 .complexity-badge sup {
-    vertical-align: super;
-    font-size: 0.7em;
-    line-height: 0;
+    font-size: 0.65em;
+    vertical-align: baseline;
+    position: relative;
+    top: -0.5em;
     margin: 0;
     padding: 0;
+    line-height: 0;
 }
