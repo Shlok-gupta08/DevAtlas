@@ -1920,16 +1920,16 @@
 /* ========== DELETE DIALOG STICKY ACTIONS ========== */
 .delete-q-dialog .dialog-actions-sticky {
     margin-top: 24px;
-    border-radius: 0 0 18px 18px;
+    border-top: none;
+    padding: 0 20px 20px;
+    gap: 10px;
 }
 
 .delete-q-dialog .dialog-actions-sticky .dialog-cancel {
     flex: 1;
-    border-radius: 0;
-    border: none;
-    border-bottom-left-radius: 18px;
-    border-right: 1px solid #1e1e1e;
-    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #2a2a2a;
+    padding: 13px;
     font-size: 14px;
     font-weight: 700;
     background: #111;
@@ -1938,15 +1938,15 @@
 
 .delete-q-dialog .dialog-actions-sticky .dialog-cancel:hover {
     background: #1a1a1a;
+    border-color: #404040;
     color: #d4d4d4;
 }
 
 .delete-q-dialog .dialog-actions-sticky .dialog-delete {
     flex: 1;
-    border-radius: 0;
-    border: none;
-    border-bottom-right-radius: 18px;
-    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 13px;
     font-size: 14px;
     font-weight: 700;
 }
