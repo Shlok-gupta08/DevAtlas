@@ -1491,19 +1491,18 @@
     // Converts n^2 → n<sup>2</sup>, n^(log n) → n<sup>log n</sup>
     function formatComplexity(str) {
         if (!str) return str;
-        // Normalize whitespace around ^ so no stray spaces end up near <sup>
+        // Normalize whitespace around ^ so no stray spaces end up near exponent
         str = str.replace(/\s*\^\s*/g, '^');
+        // Convert old <sup> to <span class="exp"> (re-formatting previously saved values)
+        str = str.replace(/<sup>/g, '<span class="exp">').replace(/<\/sup>/g, '</span>');
         // Handle n^(expr) — parenthesized exponent
         str = str.replace(/\^\(([^)]+)\)/g, function (match, inner) {
-            return '<sup>' + inner.trim() + '</sup>';
+            return '<span class="exp">' + inner.trim() + '</span>';
         });
         // Handle n^x — single token exponent
         str = str.replace(/\^([^\s<()+*/]+)/g, function (match, exp) {
-            return '<sup>' + exp.trim() + '</sup>';
+            return '<span class="exp">' + exp.trim() + '</span>';
         });
-        // Clean stray whitespace around existing <sup> tags (already-formatted values)
-        str = str.replace(/\s*<sup>/g, '<sup>');
-        str = str.replace(/<\/sup>\s*/g, '</sup>');
         return str;
     }
 
@@ -1512,7 +1511,9 @@
         if (!str) return '';
         // Remove O( prefix and ) suffix if present
         str = str.replace(/^O\(/, '').replace(/\)$/, '');
-        // Convert <sup>...</sup> back to ^(...)
+        // Convert <span class="exp">...</span> back to ^(...)
+        str = str.replace(/<span class="exp">([^<]+)<\/span>/g, '^($1)');
+        // Also handle legacy <sup>...</sup>
         str = str.replace(/<sup>([^<]+)<\/sup>/g, '^($1)');
         return str;
     }
@@ -1919,6 +1920,10 @@
                 h += '<div class="qs-item' + active + '" data-fv-cat-id="' + entry.catId + '" data-fv-q-id="' + entry.questionId + '">';
                 h += '<span class="qs-custom-tag" style="color:' + dotColor + '">★</span>';
                 h += '<span class="qs-item-title">' + escapeHtml(entry.q.title) + '</span>';
+                h += '<span class="qs-custom-icons">';
+                h += '<span class="qs-edit-icon" data-edit-cat="' + entry.catId + '" data-edit-q="' + entry.questionId + '" title="Edit"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>';
+                h += '<span class="qs-trash-icon" data-del-cat="' + entry.catId + '" data-del-q="' + entry.questionId + '" title="Delete"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></span>';
+                h += '</span>';
                 h += '</div>';
             });
             h += '</div></div>';
@@ -1956,6 +1961,22 @@
             toggle.addEventListener('click', function () {
                 var body = dsaView.querySelector('[data-fv-cat-body="' + toggle.dataset.fvCat + '"]');
                 if (body) { var h = body.style.display === 'none'; body.style.display = h ? '' : 'none'; toggle.querySelector('.fv-toggle-arrow').textContent = h ? '▾' : '▸'; }
+            });
+        });
+
+        // Edit icon clicks on custom questions in sidebar
+        dsaView.querySelectorAll('.qs-edit-icon[data-edit-q]').forEach(function (icon) {
+            icon.addEventListener('click', function (e) {
+                e.stopPropagation();
+                renderEditQuestionDialog(icon.dataset.editCat, icon.dataset.editQ);
+            });
+        });
+
+        // Trash icon clicks on custom questions in sidebar
+        dsaView.querySelectorAll('.qs-trash-icon[data-del-q]').forEach(function (icon) {
+            icon.addEventListener('click', function (e) {
+                e.stopPropagation();
+                renderDeleteConfirmDialog(icon.dataset.delCat, icon.dataset.delQ, function () { renderCustomQuestionsView(); });
             });
         });
 

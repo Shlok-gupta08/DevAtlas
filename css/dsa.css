@@ -2032,13 +2032,11 @@
     opacity: 1;
 }
 
-/* ========== SUP TIGHTEN ========== */
-.complexity-badge sup {
-    font-size: 0.65em;
-    vertical-align: baseline;
-    position: relative;
-    top: -0.5em;
+/* ========== EXPONENT (superscript via span, no browser sup defaults) ========== */
+.exp {
+    font-size: 0.7em;
+    vertical-align: super;
+    line-height: 0;
     margin: 0;
     padding: 0;
-    line-height: 0;
 }
