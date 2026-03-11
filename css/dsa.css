@@ -1651,9 +1651,9 @@
 .dialog-cancel {
     padding: 10px 24px;
     border-radius: 10px;
-    background: rgba(239, 68, 68, 0.06);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    color: #ef4444;
+    background: rgba(163, 163, 163, 0.06);
+    border: 1px solid #2a2a2a;
+    color: #a3a3a3;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
@@ -1662,8 +1662,9 @@
 }
 
 .dialog-cancel:hover {
-    background: rgba(239, 68, 68, 0.12);
-    border-color: rgba(239, 68, 68, 0.4);
+    background: rgba(163, 163, 163, 0.12);
+    border-color: #404040;
+    color: #d4d4d4;
 }
 
 .dialog-save {
@@ -1923,8 +1924,21 @@
 }
 
 .delete-q-dialog .dialog-actions-sticky .dialog-cancel {
+    flex: 1;
+    border-radius: 0;
+    border: none;
     border-bottom-left-radius: 18px;
     border-right: 1px solid #1e1e1e;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    background: #111;
+    color: #a3a3a3;
+}
+
+.delete-q-dialog .dialog-actions-sticky .dialog-cancel:hover {
+    background: #1a1a1a;
+    color: #d4d4d4;
 }
 
 .delete-q-dialog .dialog-actions-sticky .dialog-delete {
