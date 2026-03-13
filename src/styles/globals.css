@@ -117,7 +117,7 @@ h3, h4, h5, h6 { font-family: 'Google Sans', 'DM Sans', system-ui, sans-serif; l
 .kw { color: var(--accent); font-weight: 600; }
 
 /* ========== HERO (per-language) ========== */
-.section-hero { padding: 80px 48px 40px; max-width: 1100px; margin: 0 auto; }
+.section-hero { padding: 80px 48px 40px; margin: 0; text-align: left; }
 .section-hero h1 {
   font-family: 'Bricolage Grotesque', system-ui, sans-serif;
   font-size: 64px; font-weight: 800;
@@ -131,6 +131,7 @@ h3, h4, h5, h6 { font-family: 'Google Sans', 'DM Sans', system-ui, sans-serif; l
 .subsection-desc { font-size: 14px; color: #525252; margin-bottom: 20px; }
 
 @media (max-width: 768px) {
+  .section-hero { padding: 80px 20px 32px; }
   .section-block { padding: 0 20px; }
 }
 
