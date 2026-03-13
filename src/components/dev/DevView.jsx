@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore';
 import { useDSAStore } from '../../store/useDSAStore';
 import DevSidebar from './DevSidebar';
@@ -11,6 +11,7 @@ export default function DevView() {
     const activeLang = useAppStore((s) => s.activeLang);
     const setActiveLang = useAppStore((s) => s.setActiveLang);
     const savePosition = useDSAStore((s) => s.savePosition);
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(() => window.innerWidth <= 768);
 
     /* Default to html if no lang selected */
     useEffect(() => {
@@ -28,9 +29,14 @@ export default function DevView() {
 
     return (
         <div data-lang={activeLang}>
-            <DevSidebar activeLang={activeLang} onSwitchLang={setActiveLang} />
-            <DevTopNav langData={langData} activeLang={activeLang} />
-            <DevContent langData={langData} activeLang={activeLang} />
+            <DevSidebar
+                activeLang={activeLang}
+                onSwitchLang={setActiveLang}
+                collapsed={sidebarCollapsed}
+                onToggleCollapsed={setSidebarCollapsed}
+            />
+            <DevTopNav langData={langData} activeLang={activeLang} sidebarCollapsed={sidebarCollapsed} />
+            <DevContent langData={langData} activeLang={activeLang} sidebarCollapsed={sidebarCollapsed} />
         </div>
     );
 }

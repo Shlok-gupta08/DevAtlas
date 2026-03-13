@@ -3,20 +3,19 @@ import { useAppStore } from '../../store/useAppStore';
 import { DevAtlasData } from '../../data/index';
 import { DEV_CATEGORIES, LANG_ICONS } from '../../utils/constants';
 
-export default function DevSidebar({ activeLang, onSwitchLang }) {
+export default function DevSidebar({ activeLang, onSwitchLang, collapsed, onToggleCollapsed }) {
     const setView = useAppStore((s) => s.setView);
-    const [collapsed, setCollapsed] = useState(() => window.innerWidth <= 768);
     const [hoverReveal, setHoverReveal] = useState(false);
 
     const toggleSidebar = useCallback(() => {
-        setCollapsed((prev) => {
+        onToggleCollapsed((prev) => {
             if (!prev) {
                 // Collapsing — allow hover-reveal
                 setHoverReveal(false);
             }
             return !prev;
         });
-    }, []);
+    }, [onToggleCollapsed]);
 
     /* Hover-zone reveals sidebar when collapsed */
     useEffect(() => {
@@ -37,7 +36,7 @@ export default function DevSidebar({ activeLang, onSwitchLang }) {
         <>
             {/* Mobile overlay */}
             {!collapsed && (
-                <div className="dev-sidebar-overlay" onClick={() => setCollapsed(true)} />
+                <div className="dev-sidebar-overlay" onClick={() => onToggleCollapsed(true)} />
             )}
 
             {/* Hover zone for collapsed sidebar */}

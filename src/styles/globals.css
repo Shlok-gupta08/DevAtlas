@@ -126,8 +126,13 @@ h3, h4, h5, h6 { font-family: 'Google Sans', 'DM Sans', system-ui, sans-serif; l
   line-height: 1.05; margin: 0 0 16px; letter-spacing: -0.04em;
 }
 .section-hero p { font-size: 16px; color: #737373; line-height: 1.7; max-width: 650px; }
+.section-block { padding: 0 48px; }
 .subsection-header { font-size: 28px; font-weight: 700; color: #e5e5e5; margin: 0 0 6px; letter-spacing: -0.025em; }
 .subsection-desc { font-size: 14px; color: #525252; margin-bottom: 20px; }
+
+@media (max-width: 768px) {
+  .section-block { padding: 0 20px; }
+}
 
 /* ========== COMPLEXITY EXPONENT ========== */
 .exp { font-size: 0.75em; vertical-align: super; }

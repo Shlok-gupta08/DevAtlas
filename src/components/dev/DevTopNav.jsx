@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-export default function DevTopNav({ langData, activeLang }) {
+export default function DevTopNav({ langData, activeLang, sidebarCollapsed }) {
     const [activeSection, setActiveSection] = useState(null);
     const observerRef = useRef(null);
 
@@ -46,7 +46,7 @@ export default function DevTopNav({ langData, activeLang }) {
     }, []);
 
     return (
-        <div className="dev-topnav">
+        <div className={`dev-topnav ${sidebarCollapsed ? 'expanded' : ''}`}>
             {sections.map((s) => (
                 <button
                     key={s.id}

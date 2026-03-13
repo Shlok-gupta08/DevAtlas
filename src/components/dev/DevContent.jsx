@@ -28,7 +28,7 @@ function highlightCodeElement(el) {
     el.dataset.highlighted = 'yes';
 }
 
-export default function DevContent({ langData, activeLang }) {
+export default function DevContent({ langData, activeLang, sidebarCollapsed }) {
     const contentRef = useRef(null);
 
     /* Re-highlight code blocks + scroll to top when content changes */
@@ -101,7 +101,7 @@ export default function DevContent({ langData, activeLang }) {
     }
 
     return (
-        <div className="dev-content" ref={contentRef} data-lang={activeLang}>
+        <div className={`dev-content ${sidebarCollapsed ? 'expanded' : ''}`} ref={contentRef} data-lang={activeLang}>
             {/* Section hero */}
             <div className="section-hero">
                 <h1>{langData.name}</h1>
