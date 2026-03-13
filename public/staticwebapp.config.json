@@ -1,0 +1,48 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "*.ico", "*.png", "*.svg", "*.jpg", "*.jpeg", "*.webp", "*.woff", "*.woff2", "*.ttf", "*.json"]
+  },
+  "mimeTypes": {
+    ".js": "text/javascript",
+    ".mjs": "text/javascript",
+    ".cjs": "text/javascript",
+    ".css": "text/css",
+    ".json": "application/json",
+    ".wasm": "application/wasm",
+    ".svg": "image/svg+xml",
+    ".woff": "font/woff",
+    ".woff2": "font/woff2",
+    ".ttf": "font/ttf",
+    ".ico": "image/x-icon"
+  },
+  "routes": [
+    {
+      "route": "/assets/*.js",
+      "headers": {
+        "Content-Type": "text/javascript; charset=utf-8",
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "route": "/assets/*.css",
+      "headers": {
+        "Content-Type": "text/css; charset=utf-8",
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "route": "/assets/*",
+      "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
+    },
+    {
+      "route": "/index.html",
+      "headers": { "Cache-Control": "no-cache, no-store, must-revalidate" }
+    }
+  ],
+  "globalHeaders": {
+    "X-Frame-Options": "SAMEORIGIN",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+  }
+}
