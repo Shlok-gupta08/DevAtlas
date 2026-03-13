@@ -1,6 +1,33 @@
 import { useEffect, useRef } from 'react';
 import hljs from 'highlight.js';
 
+function highlightCodeElement(el) {
+    const raw = el.textContent || '';
+    const langClass = Array.from(el.classList).find((cls) => cls.startsWith('language-'));
+    const requestedLang = langClass ? langClass.replace('language-', '').toLowerCase() : '';
+
+    const languageMap = {
+        js: 'javascript',
+        ts: 'typescript',
+        py: 'python',
+        csharp: 'cs',
+        sh: 'bash',
+        shell: 'bash',
+        zsh: 'bash',
+        plaintext: 'text',
+        txt: 'text',
+    };
+
+    const normalizedLang = languageMap[requestedLang] || requestedLang;
+    const result = normalizedLang && hljs.getLanguage(normalizedLang)
+        ? hljs.highlight(raw, { language: normalizedLang })
+        : hljs.highlightAuto(raw);
+
+    el.innerHTML = result.value;
+    el.classList.add('hljs');
+    el.dataset.highlighted = 'yes';
+}
+
 export default function DevContent({ langData, activeLang }) {
     const contentRef = useRef(null);
 
@@ -8,7 +35,7 @@ export default function DevContent({ langData, activeLang }) {
     useEffect(() => {
         if (!contentRef.current) return;
         contentRef.current.querySelectorAll('pre code').forEach((el) => {
-            hljs.highlightElement(el);
+            highlightCodeElement(el);
         });
 
         // Set up copy buttons

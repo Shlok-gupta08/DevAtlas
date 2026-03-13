@@ -5,6 +5,33 @@ import { useAppStore } from '../../store/useAppStore';
 import { formatComplexity } from '../../utils/helpers';
 import { ChevronLeft, ChevronRight, Pencil, Trash2 } from 'lucide-react';
 
+function highlightCodeElement(el) {
+    const raw = el.textContent || '';
+    const langClass = Array.from(el.classList).find((cls) => cls.startsWith('language-'));
+    const requestedLang = langClass ? langClass.replace('language-', '').toLowerCase() : '';
+
+    const languageMap = {
+        js: 'javascript',
+        ts: 'typescript',
+        py: 'python',
+        csharp: 'cs',
+        sh: 'bash',
+        shell: 'bash',
+        zsh: 'bash',
+        plaintext: 'text',
+        txt: 'text',
+    };
+
+    const normalizedLang = languageMap[requestedLang] || requestedLang;
+    const result = normalizedLang && hljs.getLanguage(normalizedLang)
+        ? hljs.highlight(raw, { language: normalizedLang })
+        : hljs.highlightAuto(raw);
+
+    el.innerHTML = result.value;
+    el.classList.add('hljs');
+    el.dataset.highlighted = 'yes';
+}
+
 export default function DSAQuestionDetail({
     catConfig, question, questionIndex, totalQuestions,
     onPrev, onNext, onEditCustom, onDeleteCustom,
@@ -38,7 +65,7 @@ export default function DSAQuestionDetail({
     useEffect(() => {
         if (!contentRef.current) return;
         contentRef.current.querySelectorAll('pre code').forEach((el) => {
-            hljs.highlightElement(el);
+            highlightCodeElement(el);
         });
         // Setup copy buttons
         const copyBtns = contentRef.current.querySelectorAll('.copy-btn');
