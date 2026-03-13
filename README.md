@@ -14,7 +14,8 @@ DevAtlas is your single source of truth for developer knowledge. Whether you're 
 
 It's built as a fast, offline-capable, single-page reference with:
 
-- **Zero dependencies at runtime** — pure HTML, CSS, and JavaScript
+- **Built with React + Vite** for lightning-fast HMR and modular components
+- **Tailwind CSS** for responsive, mobile-friendly design across all screen ratios
 - **Syntax-highlighted code blocks** with one-click copy
 - **Dark-mode-first, premium UI** designed for long reading sessions
 - **Collapsible sidebar navigation** with per-language section browsing
@@ -106,13 +107,12 @@ DevAtlas isn't just another cheat sheet — it's designed to be a tool you'd act
 
 | Layer | Technology |
 |-------|-----------|
-| Structure | HTML5 |
-| Styling | Vanilla CSS (custom properties, Grid, Flexbox) |
-| Logic | Vanilla JavaScript (ES6+) |
+| Framework | [React](https://react.dev/) + [Vite](https://vitejs.dev/) |
+| Styling | [Tailwind CSS](https://tailwindcss.com/) |
+| State Management | [Zustand](https://zustand-demo.pmnd.rs/) |
 | Syntax Highlighting | [Highlight.js](https://highlightjs.org/) |
-| Animations | [GSAP](https://greensock.com/gsap/) + ScrollTrigger |
-| Icons | [Lucide Icons](https://lucide.dev/) |
-| Build | None — zero build step, just open `index.html` |
+| Animations | [Framer Motion](https://www.framer.com/motion/) + GSAP |
+| Icons | [Lucide React](https://lucide.dev/) |
 
 ---
 
@@ -120,68 +120,40 @@ DevAtlas isn't just another cheat sheet — it's designed to be a tool you'd act
 
 ```
 DevAtlas/
-├── index.html                  # Entry point — just double-click to run
-│
-├── css/
-│   ├── main.css                # Base styles, CSS variables, typography
-│   ├── layout.css              # Grid, flexbox, structural layout, landing page
-│   ├── sidebar.css             # Sidebar specific styling
-│   └── dsa.css                 # DSA section styles
-│
-├── js/
-│   ├── data/
-│   │   ├── dev/
-│   │   │   ├── data_html.js    # HTML reference
-│   │   │   ├── data_css.js     # CSS reference
-│   │   │   ├── data_js.js      # JavaScript reference
-│   │   │   ├── data_sql.js     # SQL reference
-│   │   │   └── data_git.js     # Git reference
-│   │   └── dsa/
-│   │       ├── dsa_arrays.js           # Arrays & Matrices (15+ problems)
-│   │       ├── dsa_bst.js              # Binary Search Trees (10+ problems)
-│   │       ├── dsa_dp.js               # Dynamic Programming (15+ problems)
-│   │       ├── dsa_graphs.js           # Graphs (16+ problems)
-│   │       ├── dsa_greedy.js           # Greedy Algorithms (7+ problems)
-│   │       ├── dsa_hashing_tries.js    # Hashing & Tries (9+ problems)
-│   │       ├── dsa_heaps.js            # Heaps / Priority Queues (5+ problems)
-│   │       ├── dsa_linked_lists.js     # Linked Lists (10+ problems)
-│   │       ├── dsa_math_bits.js        # Mathematics & Bit Manipulation (8+ problems)
-│   │       ├── dsa_recursion.js        # Recursion & Backtracking (13+ problems)
-│   │       ├── dsa_searching_sorting.js # Searching & Sorting (10+ problems)
-│   │       ├── dsa_segment_trees.js    # Segment Trees (3+ problems)
-│   │       ├── dsa_stacks_queues.js    # Stacks & Queues (10+ problems)
-│   │       ├── dsa_strings.js          # Strings (8+ problems)
-│   │       └── dsa_trees.js            # Binary Trees (15+ problems)
-│   │
-│   ├── components/
-│   │   ├── sidebar.js          # Sidebar toggle logic (window.SidebarController)
-│   │   ├── contentRender.js    # Dev content rendering engine (window.ContentRenderer)
-│   │   ├── dsaStore.js         # DSA persistence layer — filters, notes, position (window.DSAStore)
-│   │   └── dsaRenderer.js      # DSA rendering engine (window.DSARenderer)
-│   │
-│   └── app.js                  # Main init — landing page, branding, bootstrap
-│
-└── README.md                   # You are here
+├── src/
+│   ├── components/       # React components (DSA, Dev docs, UI)
+│   ├── data/             # Content data files (HTML, CSS, JS, DSA questions)
+│   ├── store/            # Zustand stores (useAppStore, useDSAStore)
+│   ├── utils/            # Helper functions and constants
+│   ├── index.css         # Tailwind directives and global styles
+│   └── main.jsx          # React entry point
+├── public/               # Static assets
+├── index.html            # Vite HTML template
+├── tailwind.config.js    # Tailwind configuration
+├── vite.config.js        # Vite build configuration
+└── package.json          # Dependencies and scripts
 ```
-
-> **No build step required.** All modularity is achieved through sequential `<script>` tags and the global `window` object. Works perfectly on `file://` protocol.
 
 ---
 
 ## 💻 Getting Started
 
-### View Locally
+### Run Locally
 
-Simply open `index.html` in any modern browser — no build step or server required.
+Ensure you have Node.js installed, then run the following commands:
 
 ```bash
 # Clone the repo
 git clone https://github.com/Shlok-gupta08/DevAtlas.git
 
-# Open directly
-start index.html        # Windows
-open index.html         # macOS
-xdg-open index.html     # Linux
+# Navigate to project directory
+cd DevAtlas
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
 ### Adding New Language Content
